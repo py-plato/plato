@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from .context import Context
 from .providers import Provider
 
 
@@ -17,6 +18,6 @@ def _patch_init(instance):
         for field_name in dir(instance):
             field = getattr(self, field_name)
             if isinstance(field, Provider):
-                setattr(self, field_name, field.sample())
+                setattr(self, field_name, field.sample(Context()))
 
     instance.__init__ = __init__

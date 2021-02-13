@@ -1,19 +1,28 @@
 import pytest
 
+import plato
 from plato import nested, Provider, shapeclass
 
 
 class FixedProvider(Provider):
-    def sample(self):
+    def sample(self, _context):
         return "provider value"
 
 
 class CountingProvider(Provider):
     count: int = 0
 
-    def sample(self):
+    def sample(self, _context):
         self.count += 1
         return self.count
+
+
+class CollectSeedsProvider(Provider):
+    def __init__(self):
+        self.seeds = []
+
+    def sample(self, context):
+        self.seeds.append(context.seed)
 
 
 def test_required_field():
@@ -71,3 +80,46 @@ def test_nested_shapeclass():
     assert outer.child.field == 1
     assert outer.first == 2
     assert outer.last == 3
+
+
+def test_context_provides_different_seeds_within_instance():
+    provider = CollectSeedsProvider()
+
+    @shapeclass
+    class TestData:
+        field0: None = provider
+        field1: None = provider
+
+    TestData()
+
+    assert provider.seeds[0] != provider.seeds[1]
+
+
+def test_context_provides_different_seeds_across_instances():
+    @shapeclass
+    class TestData:
+        field: None = CollectSeedsProvider()
+
+    TestData()
+    TestData()
+
+    assert TestData.field.seeds[0] != TestData.field.seeds[1]
+
+
+def test_context_seeds_are_deterministic():
+    provider = CollectSeedsProvider()
+
+    @shapeclass
+    class TestData:
+        field0: None = provider
+        field1: None = provider
+
+    plato.seed(42)
+    TestData()
+    seeds_first_run = list(provider.seeds)
+    provider.seeds.clear()
+
+    plato.seed(42)
+    TestData()
+
+    assert seeds_first_run == provider.seeds
