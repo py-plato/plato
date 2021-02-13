@@ -18,12 +18,9 @@ class CountingProvider(Provider):
         return self.count
 
 
-class CollectSeedsProvider(Provider):
-    def __init__(self):
-        self.seeds = []
-
+class SeedProvider(Provider):
     def sample(self, context):
-        self.seeds.append(context.seed)
+        return context.seed
 
 
 def test_required_field():
@@ -84,66 +81,54 @@ def test_nested_shapeclass():
 
 
 def test_context_provides_different_seeds_within_instance():
-    provider = CollectSeedsProvider()
-
     @shapeclass
     class TestData:
-        field0: None = provider
-        field1: None = provider
+        field0: bytes = SeedProvider()
+        field1: bytes = SeedProvider()
 
-    TestData()
+    data = TestData()
 
-    assert provider.seeds[0] != provider.seeds[1]
+    assert data.field0 != data.field1
 
 
 def test_context_provides_different_seeds_across_instances():
     @shapeclass
     class TestData:
-        field: None = CollectSeedsProvider()
+        field: bytes = SeedProvider()
 
-    TestData()
-    TestData()
+    data = [TestData(), TestData()]
 
-    assert TestData.field.seeds[0] != TestData.field.seeds[1]
+    assert data[0].field != data[1].field
 
 
 def test_context_seeds_are_deterministic():
-    provider = CollectSeedsProvider()
-
     @shapeclass
     class TestData:
-        field0: None = provider
-        field1: None = provider
+        field0: bytes = SeedProvider()
+        field1: bytes = SeedProvider()
 
     plato.seed(42)
-    TestData()
-    seeds_first_run = list(provider.seeds)
-    provider.seeds.clear()
+    data0 = TestData()
 
     plato.seed(42)
-    TestData()
+    data1 = TestData()
 
-    assert seeds_first_run == provider.seeds
+    assert data0.field0 == data1.field0
+    assert data0.field1 == data1.field1
 
 
 def test_context_seeds_are_stable_against_field_removal():
-    provider = CollectSeedsProvider()
+    @shapeclass
+    class TestData:
+        field0: bytes = SeedProvider()
+        field1: bytes = SeedProvider()
+
+    plato.seed(42)
+    field1_seed = TestData().field1
 
     @shapeclass
     class TestData:
-        field0: None = provider
-        field1: None = provider
+        field1: bytes = SeedProvider()
 
     plato.seed(42)
-    TestData()
-    field1_seed = provider.seeds[1]
-    provider.seeds.clear()
-
-    @shapeclass
-    class TestData:
-        field1: None = provider
-
-    plato.seed(42)
-    TestData()
-
-    assert provider.seeds[0] == field1_seed
+    assert TestData().field1 == field1_seed
