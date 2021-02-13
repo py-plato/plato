@@ -1,3 +1,4 @@
+from dataclasses import field
 import pytest
 
 import plato
@@ -123,3 +124,26 @@ def test_context_seeds_are_deterministic():
     TestData()
 
     assert seeds_first_run == provider.seeds
+
+
+def test_context_seeds_are_stable_against_field_removal():
+    provider = CollectSeedsProvider()
+
+    @shapeclass
+    class TestData:
+        field0: None = provider
+        field1: None = provider
+
+    plato.seed(42)
+    TestData()
+    field1_seed = provider.seeds[1]
+    provider.seeds.clear()
+
+    @shapeclass
+    class TestData:
+        field1: None = provider
+
+    plato.seed(42)
+    TestData()
+
+    assert provider.seeds[0] == field1_seed
