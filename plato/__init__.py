@@ -1,3 +1,4 @@
+from .context import seed
 from .providers import Provider
-from .shapeclasses import seed, shapeclass
+from .shapeclasses import shapeclass
 from .sugar import nested

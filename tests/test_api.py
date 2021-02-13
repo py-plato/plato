@@ -132,3 +132,20 @@ def test_context_seeds_are_stable_against_field_removal():
 
     plato.seed(42)
     assert TestData().field1 == field1_seed
+
+
+def test_context_seeds_for_nested_instances_are_independent_of_unnested_instances():
+    @shapeclass
+    class Inner:
+        field: bytes = SeedProvider()
+
+    @shapeclass
+    class Outer:
+        child: Inner = nested(Inner)
+
+    plato.seed(42)
+    Inner()
+    seed = Outer().child.field
+
+    plato.seed(42)
+    assert Outer().child.field == seed
