@@ -34,3 +34,19 @@ def test_generated_field():
 
     assert TestData().field == "provider value"
     assert TestData(field="different value").field == "different value"
+
+
+def test_samples_generated_field_on_each_instantiation():
+    class CountingProvider(Provider):
+        count: int = 0
+
+        def sample(self):
+            self.count += 1
+            return self.count
+
+    @shapeclass
+    class TestData:
+        field: int = CountingProvider()
+
+    assert TestData().field == 1
+    assert TestData().field == 2
