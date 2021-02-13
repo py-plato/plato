@@ -1,0 +1,1 @@
+from .shapeclasses import shapeclass

@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "plato"
+version = "0.1.0"
+description = "A dataclasses-inspired approach to test data."
+authors = ["Jan Gosmann <jan@hyper-world.de>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.2"
+black = "^20.8b1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
