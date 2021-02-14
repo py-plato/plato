@@ -149,3 +149,44 @@ def test_context_seeds_for_nested_instances_are_independent_of_unnested_instance
 
     plato.seed(42)
     assert Outer().child.field == seed
+
+
+def test_derived_and_nested_shapeclass_behaviour():
+    @shapeclass
+    class Inner:
+        field0: str = "field0"
+        field1: str = "field1"
+
+    @shapeclass
+    class Outer:
+        @shapeclass
+        class InnerWithChangedDefault(Inner):
+            field1: str = FixedProvider()
+
+        child: Inner = nested(InnerWithChangedDefault)
+
+    outer_default = Outer()
+    assert outer_default.child.field0 == "field0"
+    assert outer_default.child.field1 == "provider value"
+
+    outer_base_inner = Outer(child=Inner())
+    assert outer_base_inner.child.field0 == "field0"
+    assert outer_base_inner.child.field1 == "field1"
+
+    outer_derived_inner = Outer(child=Outer.InnerWithChangedDefault())
+    assert outer_derived_inner.child.field0 == "field0"
+    assert outer_derived_inner.child.field1 == "provider value"
+
+    outer_non_default_derived_inner = Outer(
+        child=Outer.InnerWithChangedDefault(field1="non default")
+    )
+    assert outer_non_default_derived_inner.child.field0 == "field0"
+    assert outer_non_default_derived_inner.child.field1 == "non default"
+
+
+def test_override_with_provider():
+    @shapeclass
+    class TestData:
+        field: str = "foo"
+
+    assert TestData(field=FixedProvider()).field == "provider value"
