@@ -2,7 +2,7 @@ from dataclasses import field
 import pytest
 
 import plato
-from plato import nested, Provider, Shared, shapeclass
+from plato import Provider, Shared, shapeclass
 
 
 class FixedProvider(Provider):
@@ -71,7 +71,7 @@ def test_nested_shapeclass():
     @shapeclass
     class Outer:
         first: int = shared_counting_provider
-        child: Inner = nested(Inner)
+        child: Inner = Inner
         last: int = shared_counting_provider
 
     outer = Outer()
@@ -141,7 +141,7 @@ def test_context_seeds_for_nested_instances_are_independent_of_unnested_instance
 
     @shapeclass
     class Outer:
-        child: Inner = nested(Inner)
+        child: Inner = Inner
 
     plato.seed(42)
     Inner()
@@ -163,7 +163,7 @@ def test_derived_and_nested_shapeclass_behaviour():
         class InnerWithChangedDefault(Inner):
             field1: str = FixedProvider()
 
-        child: Inner = nested(InnerWithChangedDefault)
+        child: Inner = InnerWithChangedDefault
 
     outer_default = Outer()
     assert outer_default.child.field0 == "field0"
