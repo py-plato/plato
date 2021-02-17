@@ -1,18 +1,20 @@
 from collections import defaultdict
 from dataclasses import dataclass, field
 from hashlib import blake2b
-from typing import Dict, Type
+from typing import Any, Dict, Type
 
 
 @dataclass(frozen=True)
 class Context:
     seed: bytes
+    metadata: Dict[Any, Any]
 
 
 @dataclass(frozen=True)
 class ProtoContext:
     hasher: blake2b
     type_counts: Dict[str, int] = field(default_factory=lambda: defaultdict(lambda: 0))
+    metadata: Dict[Any, Any] = field(default_factory=dict)
 
     def subcontext(self, class_name: str) -> "ProtoContext":
         self.type_counts[class_name] += 1
@@ -26,7 +28,7 @@ class ProtoContext:
     def field_context(self, field_name: str) -> Context:
         field_hasher = self.hasher.copy()
         field_hasher.update(field_name.encode())
-        return Context(seed=field_hasher.digest())
+        return Context(seed=field_hasher.digest(), metadata=self.metadata)
 
     @staticmethod
     def current() -> "ProtoContext":

@@ -2,7 +2,7 @@ from dataclasses import field
 import pytest
 
 import plato
-from plato import nested, Provider, shapeclass
+from plato import nested, Provider, Shared, shapeclass
 
 
 class FixedProvider(Provider):
@@ -190,3 +190,15 @@ def test_override_with_provider():
         field: str = "foo"
 
     assert TestData(field=FixedProvider()).field == "provider value"
+
+
+def test_shared_values():
+    @shapeclass
+    class TestData:
+        shared_data = Shared(CountingProvider())
+        field0: int = shared_data
+        field1: int = shared_data
+
+    data = TestData()
+    assert data.field0 == 1
+    assert data.field1 == 1
