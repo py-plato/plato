@@ -6,6 +6,18 @@ class Provider(ABC):
     def sample(self, context):
         ...
 
+    def __getattr__(self, field_name: str):
+        return FieldProvider(self, field_name)
+
+
+class FieldProvider(Provider):
+    def __init__(self, parent: Provider, field_name: str):
+        self.parent = parent
+        self.field_name = field_name
+
+    def sample(self, context):
+        return getattr(self.parent.sample(context), self.field_name)
+
 
 class Shared(Provider):
     def __init__(self, provider):

@@ -1,4 +1,4 @@
-from dataclasses import field
+from dataclasses import dataclass, field
 import typing
 import pytest
 
@@ -22,6 +22,17 @@ class CountingProvider(Provider):
 class SeedProvider(Provider):
     def sample(self, context):
         return context.seed
+
+
+class SequenceProvider(Provider):
+    def __init__(self, values):
+        self.values = values
+        self._n_values_sampled = 0
+
+    def sample(self, context):
+        retval = self.values[self._n_values_sampled % len(self.values)]
+        self._n_values_sampled += 1
+        return retval
 
 
 def test_required_field():
@@ -234,3 +245,43 @@ def test_different_shared_values_are_independent():
     data = TestData()
     assert data.field0 == 1
     assert data.field1 == 2
+
+
+def test_nonshared_dataclass_field_access():
+    @dataclass
+    class Data:
+        field0: str
+        field1: str
+
+    @shapeclass
+    class TestData:
+        child = SequenceProvider(
+            [Data(field0="a0", field1="a1"), Data(field0="b0", field1="b1")]
+        )
+        field0: str = child.field0
+        field1: str = child.field1
+
+    test_data = TestData()
+    assert test_data.field0 == "a0"
+    assert test_data.field1 == "b1"
+
+
+def test_shared_dataclass_field_access():
+    @dataclass
+    class Data:
+        field0: str
+        field1: str
+
+    @shapeclass
+    class TestData:
+        child = Shared(
+            SequenceProvider(
+                [Data(field0="a0", field1="a1"), Data(field0="b0", field1="b1")]
+            )
+        )
+        field0: str = child.field0
+        field1: str = child.field1
+
+    test_data = TestData()
+    assert test_data.field0 == "a0"
+    assert test_data.field1 == "a1"
