@@ -255,9 +255,7 @@ def test_nonshared_dataclass_field_access():
 
     @shapeclass
     class TestData:
-        child = SequenceProvider(
-            [Data(field0="a0", field1="a1"), Data(field0="b0", field1="b1")]
-        )
+        child = SequenceProvider([Data("a0", "a1"), Data("b0", "b1")])
         field0: str = child.field0
         field1: str = child.field1
 
@@ -285,3 +283,43 @@ def test_shared_dataclass_field_access():
     test_data = TestData()
     assert test_data.field0 == "a0"
     assert test_data.field1 == "a1"
+
+
+def test_nonshared_shapeclass_field_access():
+    @shapeclass
+    class Inner:
+        provider = SequenceProvider(list(range(6)))
+        field0: str = provider
+        field1: str = provider
+
+    @shapeclass
+    class TestData:
+        child = Inner
+        field0a: str = child.field0
+        field0b: str = child.field0
+        field1: str = child.field1
+
+    test_data = TestData()
+    assert test_data.field0a == 0
+    assert test_data.field0b == 1
+    assert test_data.field1 == 2
+
+
+def test_shared_shapeclass_field_access():
+    @shapeclass
+    class Inner:
+        provider = SequenceProvider(list(range(6)))
+        field0: str = provider
+        field1: str = provider
+
+    @shapeclass
+    class TestData:
+        child = Shared(Inner)
+        field0a: str = child.field0
+        field0b: str = child.field0
+        field1: str = child.field1
+
+    test_data = TestData()
+    assert test_data.field0a == 0
+    assert test_data.field0b == 0
+    assert test_data.field1 == 1
