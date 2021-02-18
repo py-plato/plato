@@ -202,3 +202,24 @@ def test_shared_values():
     data = TestData()
     assert data.field0 == 1
     assert data.field1 == 1
+
+    @shapeclass
+    class TestData:
+        field0: int = Shared(CountingProvider())
+        field1: int = field0
+
+    data = TestData()
+    assert data.field0 == 1
+    assert data.field1 == 1
+
+
+def test_different_shared_values_are_independent():
+    @shapeclass
+    class TestData:
+        provider = CountingProvider()
+        field0: int = Shared(provider)
+        field1: int = Shared(provider)
+
+    data = TestData()
+    assert data.field0 == 1
+    assert data.field1 == 2
