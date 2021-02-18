@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any, ClassVar
 
 from .context import ProtoContext
 from .providers import Provider
@@ -20,6 +21,12 @@ def shapeclass(cls):
             with ProtoContext.current().subcontext(self.__class__.__name__) as ctx:
                 for field_name in dir(self):
                     if field_name == "__class__":
+                        continue
+                    type_ = self.__annotations__.get(field_name, ClassVar[Any])
+                    if (
+                        hasattr(type_, "__origin__")
+                        and getattr(type_, "__origin__") is ClassVar[Any].__origin__
+                    ):
                         continue
                     field = getattr(self, field_name)
                     if isinstance(field, Provider):

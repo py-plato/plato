@@ -1,4 +1,5 @@
 from dataclasses import field
+import typing
 import pytest
 
 import plato
@@ -59,6 +60,16 @@ def test_samples_generated_field_on_each_instantiation():
 
     assert TestData().field == 1
     assert TestData().field == 2
+
+
+def test_ignores_class_variables():
+    @shapeclass
+    class TestData:
+        class_var0 = CountingProvider()
+        class_var1: typing.ClassVar[CountingProvider] = CountingProvider()
+
+    assert TestData().class_var0.count == 0
+    assert TestData().class_var1.count == 0
 
 
 def test_nested_shapeclass():
