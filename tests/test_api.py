@@ -1,9 +1,9 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import typing
 import pytest
 
 import plato
-from plato import Provider, Shared, shapeclass
+from plato import Provider, sample, Shared, shapeclass
 
 
 class FixedProvider(Provider):
@@ -41,18 +41,18 @@ def test_required_field():
         field: str
 
     with pytest.raises(TypeError):
-        TestData()
+        sample(TestData())
 
-    assert TestData(field="foo").field == "foo"
+    assert sample(TestData(field="foo")).field == "foo"
 
 
-def test_constant_field():
+def test_default_field():
     @shapeclass
     class TestData:
         field: str = "value"
 
-    assert TestData().field == "value"
-    assert TestData("different value").field == "different value"
+    assert sample(TestData()).field == "value"
+    assert sample(TestData("different value")).field == "different value"
 
 
 def test_generated_field():
@@ -60,8 +60,8 @@ def test_generated_field():
     class TestData:
         field: str = FixedProvider()
 
-    assert TestData().field == "provider value"
-    assert TestData(field="different value").field == "different value"
+    assert sample(TestData()).field == "provider value"
+    assert sample(TestData(field="different value")).field == "different value"
 
 
 def test_samples_generated_field_on_each_instantiation():
@@ -69,8 +69,8 @@ def test_samples_generated_field_on_each_instantiation():
     class TestData:
         field: int = CountingProvider()
 
-    assert TestData().field == 1
-    assert TestData().field == 2
+    assert sample(TestData()).field == 1
+    assert sample(TestData()).field == 2
 
 
 def test_ignores_class_variables():
@@ -79,8 +79,8 @@ def test_ignores_class_variables():
         class_var0 = CountingProvider()
         class_var1: typing.ClassVar[CountingProvider] = CountingProvider()
 
-    assert TestData().class_var0.count == 0
-    assert TestData().class_var1.count == 0
+    assert sample(TestData()).class_var0.count == 0
+    assert sample(TestData()).class_var1.count == 0
 
 
 def test_nested_shapeclass():
@@ -93,12 +93,12 @@ def test_nested_shapeclass():
     @shapeclass
     class Outer:
         first: int = shared_counting_provider
-        child: Inner = Inner
+        child: Inner = Inner()
         last: int = shared_counting_provider
 
-    outer = Outer()
-    assert outer.child.field == 1
-    assert outer.first == 2
+    outer = sample(Outer())
+    assert outer.first == 1
+    assert outer.child.field == 2
     assert outer.last == 3
 
 
@@ -108,7 +108,7 @@ def test_context_provides_different_seeds_within_instance():
         field0: bytes = SeedProvider()
         field1: bytes = SeedProvider()
 
-    data = TestData()
+    data = sample(TestData())
 
     assert data.field0 != data.field1
 
@@ -118,7 +118,7 @@ def test_context_provides_different_seeds_across_instances():
     class TestData:
         field: bytes = SeedProvider()
 
-    data = [TestData(), TestData()]
+    data = [sample(TestData()), sample(TestData())]
 
     assert data[0].field != data[1].field
 
@@ -130,10 +130,10 @@ def test_context_seeds_are_deterministic():
         field1: bytes = SeedProvider()
 
     plato.seed(42)
-    data0 = TestData()
+    data0 = sample(TestData())
 
     plato.seed(42)
-    data1 = TestData()
+    data1 = sample(TestData())
 
     assert data0.field0 == data1.field0
     assert data0.field1 == data1.field1
@@ -146,14 +146,14 @@ def test_context_seeds_are_stable_against_field_removal():
         field1: bytes = SeedProvider()
 
     plato.seed(42)
-    field1_seed = TestData().field1
+    field1_seed = sample(TestData()).field1
 
     @shapeclass
     class TestData:
         field1: bytes = SeedProvider()
 
     plato.seed(42)
-    assert TestData().field1 == field1_seed
+    assert sample(TestData()).field1 == field1_seed
 
 
 def test_context_seeds_for_nested_instances_are_independent_of_unnested_instances():
@@ -163,14 +163,14 @@ def test_context_seeds_for_nested_instances_are_independent_of_unnested_instance
 
     @shapeclass
     class Outer:
-        child: Inner = Inner
+        child: Inner = Inner()
 
     plato.seed(42)
     Inner()
-    seed = Outer().child.field
+    seed = sample(Outer()).child.field
 
     plato.seed(42)
-    assert Outer().child.field == seed
+    assert sample(Outer()).child.field == seed
 
 
 def test_derived_and_nested_shapeclass_behaviour():
@@ -185,22 +185,22 @@ def test_derived_and_nested_shapeclass_behaviour():
         class InnerWithChangedDefault(Inner):
             field1: str = FixedProvider()
 
-        child: Inner = InnerWithChangedDefault
+        child: Inner = InnerWithChangedDefault()
 
-    outer_default = Outer()
+    outer_default = sample(Outer())
     assert outer_default.child.field0 == "field0"
     assert outer_default.child.field1 == "provider value"
 
-    outer_base_inner = Outer(child=Inner())
+    outer_base_inner = sample(Outer(child=Inner()))
     assert outer_base_inner.child.field0 == "field0"
     assert outer_base_inner.child.field1 == "field1"
 
-    outer_derived_inner = Outer(child=Outer.InnerWithChangedDefault())
+    outer_derived_inner = sample(Outer(child=Outer.InnerWithChangedDefault()))
     assert outer_derived_inner.child.field0 == "field0"
     assert outer_derived_inner.child.field1 == "provider value"
 
-    outer_non_default_derived_inner = Outer(
-        child=Outer.InnerWithChangedDefault(field1="non default")
+    outer_non_default_derived_inner = sample(
+        Outer(child=Outer.InnerWithChangedDefault(field1="non default"))
     )
     assert outer_non_default_derived_inner.child.field0 == "field0"
     assert outer_non_default_derived_inner.child.field1 == "non default"
@@ -211,7 +211,7 @@ def test_override_with_provider():
     class TestData:
         field: str = "foo"
 
-    assert TestData(field=FixedProvider()).field == "provider value"
+    assert sample(TestData(field=FixedProvider())).field == "provider value"
 
 
 def test_shared_values():
@@ -221,7 +221,7 @@ def test_shared_values():
         field0: int = shared_data
         field1: int = shared_data
 
-    data = TestData()
+    data = sample(TestData())
     assert data.field0 == 1
     assert data.field1 == 1
 
@@ -230,7 +230,7 @@ def test_shared_values():
         field0: int = Shared(CountingProvider())
         field1: int = field0
 
-    data = TestData()
+    data = sample(TestData())
     assert data.field0 == 1
     assert data.field1 == 1
 
@@ -242,7 +242,7 @@ def test_different_shared_values_are_independent():
         field0: int = Shared(provider)
         field1: int = Shared(provider)
 
-    data = TestData()
+    data = sample(TestData())
     assert data.field0 == 1
     assert data.field1 == 2
 
@@ -259,7 +259,7 @@ def test_nonshared_dataclass_field_access():
         field0: str = child.field0
         field1: str = child.field1
 
-    test_data = TestData()
+    test_data = sample(TestData())
     assert test_data.field0 == "a0"
     assert test_data.field1 == "b1"
 
@@ -280,7 +280,7 @@ def test_shared_dataclass_field_access():
         field0: str = child.field0
         field1: str = child.field1
 
-    test_data = TestData()
+    test_data = sample(TestData())
     assert test_data.field0 == "a0"
     assert test_data.field1 == "a1"
 
@@ -294,12 +294,12 @@ def test_nonshared_shapeclass_field_access():
 
     @shapeclass
     class TestData:
-        child = Inner
+        child = Inner()
         field0a: str = child.field0
         field0b: str = child.field0
         field1: str = child.field1
 
-    test_data = TestData()
+    test_data = sample(TestData())
     assert test_data.field0a == 0
     assert test_data.field0b == 1
     assert test_data.field1 == 2
@@ -314,12 +314,12 @@ def test_shared_shapeclass_field_access():
 
     @shapeclass
     class TestData:
-        child = Shared(Inner)
+        child = Shared(Inner())
         field0a: str = child.field0
         field0b: str = child.field0
         field1: str = child.field1
 
-    test_data = TestData()
+    test_data = sample(TestData())
     assert test_data.field0a == 0
     assert test_data.field0b == 0
     assert test_data.field1 == 1

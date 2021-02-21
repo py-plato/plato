@@ -16,14 +16,21 @@ class FieldProvider(Provider):
         self.field_name = field_name
 
     def sample(self, context):
-        return getattr(self.parent.sample(context), self.field_name)
+        from ..shapeclasses import sample
+
+        return getattr(sample(self.parent, context), self.field_name)
 
 
 class Shared(Provider):
     def __init__(self, provider):
         self.provider = provider
+        self._sampled = False
+        self._value = None
 
     def sample(self, context):
-        if self not in context.metadata:
-            context.metadata[self] = self.provider.sample(context)
-        return context.metadata[self]
+        from ..shapeclasses import sample
+
+        if not self._sampled:
+            self._value = sample(self.provider, context)
+            self._sampled = True
+        return self._value

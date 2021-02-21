@@ -1,50 +1,30 @@
+import random
 from collections import defaultdict
-from dataclasses import dataclass, field
 from hashlib import blake2b
-from typing import Any, Dict, Type
+from typing import Dict
 
 
-@dataclass(frozen=True)
 class Context:
-    seed: bytes
-    metadata: Dict[Any, Any]
+    def __init__(self, hasher: blake2b):
+        self._hasher = hasher
+        self._type_counts: Dict[str, int] = defaultdict(lambda: 0)
 
+        self.seed = self._hasher.digest()
+        self.rng = random.Random(self.seed)
 
-@dataclass(frozen=True)
-class ProtoContext:
-    hasher: blake2b
-    type_counts: Dict[str, int] = field(default_factory=lambda: defaultdict(lambda: 0))
-    metadata: Dict[Any, Any] = field(default_factory=dict)
-
-    def subcontext(self, class_name: str) -> "ProtoContext":
-        self.type_counts[class_name] += 1
-
-        subhasher = self.hasher.copy()
+    def subcontext(self, class_name: str) -> "Context":
+        subhasher = self._hasher.copy()
         subhasher.update(class_name.encode())
-        subhasher.update(_int2bytes(self.type_counts[class_name]))
+        subhasher.update(_int2bytes(self._type_counts[class_name]))
+        self._type_counts[class_name] += 1
 
-        return ProtoContext(subhasher)
-
-    def field_context(self, field_name: str) -> Context:
-        field_hasher = self.hasher.copy()
-        field_hasher.update(field_name.encode())
-        return Context(seed=field_hasher.digest(), metadata=self.metadata)
-
-    @staticmethod
-    def current() -> "ProtoContext":
-        return _proto_context_stack[-1]
-
-    def __enter__(self):
-        _proto_context_stack.append(self)
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        _proto_context_stack.pop()
+        return Context(subhasher)
 
 
 def seed(value: int):
-    # FIXME: should this verify that we are in the root context?
-    _proto_context_stack[0] = ProtoContext(_create_hasher(value))
+    global _root
+    _root = Context(_create_hasher(value))
+    return _root
 
 
 def _int2bytes(value: int) -> bytes:
@@ -57,4 +37,8 @@ def _create_hasher(seed: int) -> blake2b:
     return hasher
 
 
-_proto_context_stack = [ProtoContext(_create_hasher(0))]
+def get_root():
+    return _root
+
+
+_root = Context(_create_hasher(0))
