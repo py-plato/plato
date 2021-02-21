@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, is_dataclass, replace
 from typing import Any, ClassVar
 
@@ -24,7 +25,7 @@ def sample(shape, context=None):
     if isinstance(shape, Provider):
         return shape.sample(context)
 
-    x = replace(shape)
+    x = deepcopy(shape)
     context = context.subcontext(x.__class__.__name__)
 
     for field_name in x.__annotations__:

@@ -18,6 +18,9 @@ class CountingProvider(Provider):
         self.count += 1
         return self.count
 
+    def __deepcopy__(self, memo):
+        return self
+
 
 class SeedProvider(Provider):
     def sample(self, context):
@@ -245,6 +248,16 @@ def test_different_shared_values_are_independent():
     data = sample(TestData())
     assert data.field0 == 1
     assert data.field1 == 2
+
+
+def test_shared_values_are_independent_across_instances():
+    provider = CountingProvider()
+
+    @shapeclass
+    class TestData:
+        field: int = Shared(provider)
+
+    assert sample(TestData()).field != sample(TestData()).field
 
 
 def test_nonshared_dataclass_field_access():

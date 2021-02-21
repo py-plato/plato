@@ -7,6 +7,8 @@ class Provider(ABC):
         ...
 
     def __getattr__(self, field_name: str):
+        if field_name.startswith("__") and field_name.endswith("__"):
+            raise AttributeError
         return FieldProvider(self, field_name)
 
 
