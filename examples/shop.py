@@ -1,18 +1,18 @@
 from dataclasses import dataclass, asdict
 from decimal import Decimal
-from plato.shapeclasses import staticProperty
+from plato.formclasses import formProperty
 from pprint import pprint
 
 from faker import Faker
 
-from plato import Provider, sample, shapeclass, Shared
+from plato import Provider, sample, formclass, Shared
 from plato.providers.faker import FromFaker
-from plato.shapeclasses import staticProperty
+from plato.formclasses import formProperty
 
 fake = FromFaker(Faker(["en-CA", "de-DE"]))
 
 # TODO generate either address randomly => abstract flag, might produce derived class flag
-@shapeclass
+@formclass
 class Address:
     street: str
     city: str
@@ -21,13 +21,13 @@ class Address:
     name: str = fake.name()
 
 
-@shapeclass
+@formclass
 class GermanPostalCodeWithCity:
     zip_code: str = fake["de-DE"].postcode()
     city: str = fake["de-DE"].city()
 
 
-@shapeclass
+@formclass
 class GermanAddress(Address):
     street: str = fake["de-DE"].street_address()
 
@@ -55,7 +55,7 @@ class CanadianPostalCodeWithCityProvider(Provider):
         )
 
 
-@shapeclass
+@formclass
 class CanadianAddress(Address):
     street: str = fake["en-CA"].street_address()
 
@@ -66,7 +66,7 @@ class CanadianAddress(Address):
     country: str = "Canada"
 
 
-@shapeclass
+@formclass
 class Product:
     name: str = fake.random_element(["Apple", "Banana", "Orange", "Pear"])
     product_number: str = fake.bothify("?????-###")
@@ -85,13 +85,13 @@ class SelectProvider(Provider):
         return self.dispatch_table[value].sample(context)
 
 
-@shapeclass
+@formclass
 class Price:
     locale: str
     # locale: Hidden[str]
     base_price: Decimal = fake.pydecimal(1, 2)
 
-    @staticProperty
+    @formProperty
     def vat_percent(self) -> Decimal:
         return SelectProvider(
             self.locale,
@@ -102,7 +102,7 @@ class Price:
         )
 
 
-@shapeclass
+@formclass
 class OrderLine:
     locale: str
     quantity: int = fake.pyint(1, 10)
@@ -137,24 +137,24 @@ class ListProvider(Provider):
 
 
 # want different addresses by default, but allow for matching
-@shapeclass
+@formclass
 class Order:
     locale: str = fake.random_element(["en-CA", "de-DE"])
 
     order_number: str = OrderNumber()  # globally unique
 
-    @staticProperty
+    @formProperty
     def billing_address(self) -> Address:
         return {
             "de-DE": GermanAddress(),
             "en-CA": CanadianAddress(),
         }[self.locale]
 
-    @staticProperty
+    @formProperty
     def shipping_address(self) -> Address:
         return self.billing_address
 
-    @staticProperty
+    @formProperty
     def order_lines(self) -> str:
         return ListProvider(1, 5, OrderLine(self.locale))
 

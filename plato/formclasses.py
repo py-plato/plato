@@ -1,5 +1,5 @@
 from copy import deepcopy
-from dataclasses import dataclass, is_dataclass, make_dataclass, Field, fields
+from dataclasses import is_dataclass, make_dataclass, Field, fields
 from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
 
@@ -7,18 +7,18 @@ from .context import get_root
 from .providers import Provider
 
 
-class _ShapeclassProvider(type):
+class _FormclassProvider(type):
     def sample(self, context):
         return self()
 
 
-Provider.register(_ShapeclassProvider)
+Provider.register(_FormclassProvider)
 
 
 post_sample_registry = WeakKeyDictionary()
 
 
-def shapeclass(cls):
+def formclass(cls):
     fields = []
     post_init_fns = {}
     annotations = getattr(cls, "__annotations__", {})
@@ -64,16 +64,16 @@ def shapeclass(cls):
     return dc
 
 
-def sample(shape, context=None):
+def sample(form, context=None):
     if context is None:
         context = get_root()
 
-    if isinstance(shape, Provider):
-        return shape.sample(context)
-    elif not is_dataclass(shape):
-        return shape
+    if isinstance(form, Provider):
+        return form.sample(context)
+    elif not is_dataclass(form):
+        return form
 
-    x = deepcopy(shape)
+    x = deepcopy(form)
     context = context.subcontext(x.__class__.__name__)
 
     for field_def in fields(x):
@@ -88,8 +88,8 @@ def sample(shape, context=None):
             value = field.sample(context.subcontext(field_name))
             setattr(x, field_name, value)
 
-    if shape.__class__ in post_sample_registry:
-        for name, fn in post_sample_registry[shape.__class__].items():
+    if form.__class__ in post_sample_registry:
+        for name, fn in post_sample_registry[form.__class__].items():
             setattr(x, name, sample(fn(x), context.subcontext(name)))
     return x
 
@@ -99,5 +99,5 @@ class StaticProperty:
         self.fn = fn
 
 
-def staticProperty(fn):
+def formProperty(fn):
     return StaticProperty(fn)

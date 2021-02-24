@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from plato.shapeclasses import staticProperty
+from plato.formclasses import formProperty
 import typing
 import pytest
 
 import plato
-from plato import Provider, sample, Shared, shapeclass
+from plato import Provider, sample, Shared, formclass
 
 
 class FixedProvider(Provider):
@@ -40,7 +40,7 @@ class SequenceProvider(Provider):
 
 
 def test_required_field():
-    @shapeclass
+    @formclass
     class TestData:
         field: str
 
@@ -51,7 +51,7 @@ def test_required_field():
 
 
 def test_default_field():
-    @shapeclass
+    @formclass
     class TestData:
         field: str = "value"
 
@@ -60,7 +60,7 @@ def test_default_field():
 
 
 def test_generated_field():
-    @shapeclass
+    @formclass
     class TestData:
         field: str = FixedProvider()
 
@@ -69,7 +69,7 @@ def test_generated_field():
 
 
 def test_samples_generated_field_on_each_instantiation():
-    @shapeclass
+    @formclass
     class TestData:
         field: int = CountingProvider()
 
@@ -78,7 +78,7 @@ def test_samples_generated_field_on_each_instantiation():
 
 
 def test_ignores_class_variables():
-    @shapeclass
+    @formclass
     class TestData:
         class_var0 = CountingProvider()
         class_var1: typing.ClassVar[CountingProvider] = CountingProvider()
@@ -87,14 +87,14 @@ def test_ignores_class_variables():
     assert sample(TestData()).class_var1.count == 0
 
 
-def test_nested_shapeclass():
+def test_nested_formclass():
     shared_counting_provider = CountingProvider()
 
-    @shapeclass
+    @formclass
     class Inner:
         field: int = shared_counting_provider
 
-    @shapeclass
+    @formclass
     class Outer:
         first: int = shared_counting_provider
         child: Inner = Inner()
@@ -107,7 +107,7 @@ def test_nested_shapeclass():
 
 
 def test_context_provides_different_seeds_within_instance():
-    @shapeclass
+    @formclass
     class TestData:
         field0: bytes = SeedProvider()
         field1: bytes = SeedProvider()
@@ -118,7 +118,7 @@ def test_context_provides_different_seeds_within_instance():
 
 
 def test_context_provides_different_seeds_across_instances():
-    @shapeclass
+    @formclass
     class TestData:
         field: bytes = SeedProvider()
 
@@ -128,7 +128,7 @@ def test_context_provides_different_seeds_across_instances():
 
 
 def test_context_seeds_are_deterministic():
-    @shapeclass
+    @formclass
     class TestData:
         field0: bytes = SeedProvider()
         field1: bytes = SeedProvider()
@@ -144,7 +144,7 @@ def test_context_seeds_are_deterministic():
 
 
 def test_context_seeds_are_stable_against_field_removal():
-    @shapeclass
+    @formclass
     class TestData:
         field0: bytes = SeedProvider()
         field1: bytes = SeedProvider()
@@ -152,7 +152,7 @@ def test_context_seeds_are_stable_against_field_removal():
     plato.seed(42)
     field1_seed = sample(TestData()).field1
 
-    @shapeclass
+    @formclass
     class TestData:
         field1: bytes = SeedProvider()
 
@@ -161,11 +161,11 @@ def test_context_seeds_are_stable_against_field_removal():
 
 
 def test_context_seeds_for_nested_instances_are_independent_of_unnested_instances():
-    @shapeclass
+    @formclass
     class Inner:
         field: bytes = SeedProvider()
 
-    @shapeclass
+    @formclass
     class Outer:
         child: Inner = Inner()
 
@@ -177,15 +177,15 @@ def test_context_seeds_for_nested_instances_are_independent_of_unnested_instance
     assert sample(Outer()).child.field == seed
 
 
-def test_derived_and_nested_shapeclass_behaviour():
-    @shapeclass
+def test_derived_and_nested_formclass_behaviour():
+    @formclass
     class Inner:
         field0: str = "field0"
         field1: str = "field1"
 
-    @shapeclass
+    @formclass
     class Outer:
-        @shapeclass
+        @formclass
         class InnerWithChangedDefault(Inner):
             field1: str = FixedProvider()
 
@@ -211,7 +211,7 @@ def test_derived_and_nested_shapeclass_behaviour():
 
 
 def test_override_with_provider():
-    @shapeclass
+    @formclass
     class TestData:
         field: str = "foo"
 
@@ -219,7 +219,7 @@ def test_override_with_provider():
 
 
 def test_shared_values():
-    @shapeclass
+    @formclass
     class TestData:
         shared_data = Shared(CountingProvider())
         field0: int = shared_data
@@ -229,7 +229,7 @@ def test_shared_values():
     assert data.field0 == 1
     assert data.field1 == 1
 
-    @shapeclass
+    @formclass
     class TestData:
         field0: int = Shared(CountingProvider())
         field1: int = field0
@@ -240,7 +240,7 @@ def test_shared_values():
 
 
 def test_different_shared_values_are_independent():
-    @shapeclass
+    @formclass
     class TestData:
         provider = CountingProvider()
         field0: int = Shared(provider)
@@ -254,7 +254,7 @@ def test_different_shared_values_are_independent():
 def test_shared_values_are_independent_across_instances():
     provider = CountingProvider()
 
-    @shapeclass
+    @formclass
     class TestData:
         field: int = Shared(provider)
 
@@ -267,7 +267,7 @@ def test_nonshared_dataclass_field_access():
         field0: str
         field1: str
 
-    @shapeclass
+    @formclass
     class TestData:
         child = SequenceProvider([Data("a0", "a1"), Data("b0", "b1")])
         field0: str = child.field0
@@ -284,7 +284,7 @@ def test_shared_dataclass_field_access():
         field0: str
         field1: str
 
-    @shapeclass
+    @formclass
     class TestData:
         child = Shared(
             SequenceProvider(
@@ -299,14 +299,14 @@ def test_shared_dataclass_field_access():
     assert test_data.field1 == "a1"
 
 
-def test_nonshared_shapeclass_field_access():
-    @shapeclass
+def test_nonshared_formclass_field_access():
+    @formclass
     class Inner:
         provider = SequenceProvider(list(range(6)))
         field0: str = provider
         field1: str = provider
 
-    @shapeclass
+    @formclass
     class TestData:
         child = Inner()
         field0a: str = child.field0
@@ -319,14 +319,14 @@ def test_nonshared_shapeclass_field_access():
     assert test_data.field1 == 2
 
 
-def test_shared_shapeclass_field_access():
-    @shapeclass
+def test_shared_formclass_field_access():
+    @formclass
     class Inner:
         provider = SequenceProvider(list(range(6)))
         field0: str = provider
         field1: str = provider
 
-    @shapeclass
+    @formclass
     class TestData:
         child = Shared(Inner())
         field0a: str = child.field0
@@ -339,36 +339,36 @@ def test_shared_shapeclass_field_access():
     assert test_data.field1 == 1
 
 
-def test_static_property():
-    @shapeclass
+def test_formProperty():
+    @formclass
     class TestData:
         field: str = "default"
 
-        @staticProperty
+        @formProperty
         def derived(self) -> str:
             return self.field
 
     assert sample(TestData(field="actual")).derived == "actual"
 
 
-def test_static_property_with_provider():
-    @shapeclass
+def test_formProperty_with_provider():
+    @formclass
     class TestData:
-        @staticProperty
+        @formProperty
         def derived(self) -> str:
             return FixedProvider()
 
     assert sample(TestData()).derived == "provider value"
 
 
-def test_static_property_with_shapeclass():
-    @shapeclass
+def test_formProperty_with_formclass():
+    @formclass
     class Derived:
         field: str = FixedProvider()
 
-    @shapeclass
+    @formclass
     class TestData:
-        @staticProperty
+        @formProperty
         def derived(self) -> str:
             return Derived()
 

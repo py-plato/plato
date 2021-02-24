@@ -18,7 +18,7 @@ class FieldProvider(Provider):
         self.field_name = field_name
 
     def sample(self, context):
-        from ..shapeclasses import sample
+        from ..formclasses import sample
 
         return getattr(sample(self.parent, context), self.field_name)
 
@@ -30,7 +30,7 @@ class Shared(Provider):
         self._value = None
 
     def sample(self, context):
-        from ..shapeclasses import sample
+        from ..formclasses import sample
 
         if not self._sampled:
             self._value = sample(self.provider, context)
