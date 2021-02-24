@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from plato.formclasses import formProperty
 import typing
 import pytest
@@ -363,6 +363,8 @@ def test_formProperty():
         def derived(self) -> str:
             return self.field
 
+    field_map = {f.name: f.type for f in fields(TestData)}
+    assert field_map["derived"] == str
     assert sample(TestData(field="actual")).derived == "actual"
 
 
@@ -373,6 +375,8 @@ def test_formProperty_with_provider():
         def derived(self) -> str:
             return FixedProvider()
 
+    field_map = {f.name: f.type for f in fields(TestData)}
+    assert field_map["derived"] == str
     assert sample(TestData()).derived == "provider value"
 
 
@@ -387,4 +391,6 @@ def test_formProperty_with_formclass():
         def derived(self) -> str:
             return Derived()
 
+    field_map = {f.name: f.type for f in fields(TestData)}
+    assert field_map["derived"] == str
     assert sample(TestData()).derived.field == "provider value"

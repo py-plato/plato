@@ -7,53 +7,58 @@ from .context import get_root
 from .providers import Provider
 
 
-post_sample_registry = WeakKeyDictionary()
+_post_init_registry = WeakKeyDictionary()
 
 
 def formclass(cls):
-    fields = []
     post_init_fns = {}
-    annotations = getattr(cls, "__annotations__", {})
-    for name, type_ in annotations.items():
-        if name in cls.__dict__:
-            continue
-        if (
-            hasattr(type_, "__origin__")
-            and getattr(type_, "__origin__") is ClassVar[Any].__origin__
-        ):
-            continue
-        fields.append((name, type_))
 
+    annotations = getattr(cls, "__annotations__", {})
+    fields = [
+        (name, type_)
+        for name, type_ in annotations.items()
+        if not _is_classvar_type(type_)
+    ]
+
+    namespace = {}
     for name, value in cls.__dict__.items():
-        if (
-            name not in annotations
-            and not isinstance(value, Field)
-            and not isinstance(value, StaticProperty)
-        ):
+        if name in {"__annotations__", "__dict__"}:
             continue
-        type_ = annotations.get(name, None)
-        if (
-            type_ is not None
-            and hasattr(type_, "__origin__")
-            and getattr(type_, "__origin__") is ClassVar[Any].__origin__
-        ):
-            continue
-        if type_ is None:
-            type_ = Any
-        if isinstance(value, StaticProperty):
+        if isinstance(value, _FormProperty):
+            fields.append((name, value.type))
             post_init_fns[name] = value.fn
             value = None
-        fields.append((name, type_, value))
+        namespace[name] = value
+
+    fields = [
+        (name, type_, namespace.pop(name)) if name in namespace else (name, type_)
+        for name, type_ in fields
+    ]
 
     dc = make_dataclass(
-        cls.__name__,
-        fields,
-        bases=cls.__mro__,
-    )  # FIXME fill namespace
-
-    post_sample_registry[dc] = post_init_fns
-
+        cls.__name__, fields, bases=cls.__mro__[1:], namespace=namespace
+    )
+    _post_init_registry[dc] = post_init_fns
     return dc
+
+
+def _is_classvar_type(type_):
+    return (
+        hasattr(type_, "__origin__")
+        and getattr(type_, "__origin__") is ClassVar[Any].__origin__
+    )
+
+
+class _FormProperty:
+    def __init__(self, fn):
+        self.fn = fn
+
+    @property
+    def type(self):
+        return getattr(self.fn, "__annotations__", {}).get("return", Any)
+
+
+formProperty = _FormProperty
 
 
 def sample(form, context=None):
@@ -80,16 +85,7 @@ def sample(form, context=None):
             value = field.sample(context.subcontext(field_name))
             setattr(x, field_name, value)
 
-    if form.__class__ in post_sample_registry:
-        for name, fn in post_sample_registry[form.__class__].items():
+    if form.__class__ in _post_init_registry:
+        for name, fn in _post_init_registry[form.__class__].items():
             setattr(x, name, sample(fn(x), context.subcontext(name)))
     return x
-
-
-class StaticProperty:
-    def __init__(self, fn):
-        self.fn = fn
-
-
-def formProperty(fn):
-    return StaticProperty(fn)
