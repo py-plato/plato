@@ -87,6 +87,21 @@ def test_ignores_class_variables():
     assert sample(TestData()).class_var1.count == 0
 
 
+def test_keeps_namespace():
+    @formclass
+    class TestData:
+        def foo(self):
+            return "foo"
+
+        @property
+        def bar(self):
+            return "bar"
+
+    data = sample(TestData())
+    assert data.foo() == "foo"
+    assert data.bar == "bar"
+
+
 def test_nested_formclass():
     shared_counting_provider = CountingProvider()
 
