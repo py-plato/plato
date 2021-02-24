@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from plato.shapeclasses import staticProperty
 import typing
 import pytest
 
@@ -336,3 +337,39 @@ def test_shared_shapeclass_field_access():
     assert test_data.field0a == 0
     assert test_data.field0b == 0
     assert test_data.field1 == 1
+
+
+def test_static_property():
+    @shapeclass
+    class TestData:
+        field: str = "default"
+
+        @staticProperty
+        def derived(self) -> str:
+            return self.field
+
+    assert sample(TestData(field="actual")).derived == "actual"
+
+
+def test_static_property_with_provider():
+    @shapeclass
+    class TestData:
+        @staticProperty
+        def derived(self) -> str:
+            return FixedProvider()
+
+    assert sample(TestData()).derived == "provider value"
+
+
+def test_static_property_with_shapeclass():
+    @shapeclass
+    class Derived:
+        field: str = FixedProvider()
+
+    @shapeclass
+    class TestData:
+        @staticProperty
+        def derived(self) -> str:
+            return Derived()
+
+    assert sample(TestData()).derived.field == "provider value"

@@ -21,7 +21,8 @@ post_sample_registry = WeakKeyDictionary()
 def shapeclass(cls):
     fields = []
     post_init_fns = {}
-    for name, type_ in cls.__annotations__.items():
+    annotations = getattr(cls, "__annotations__", {})
+    for name, type_ in annotations.items():
         if name in cls.__dict__:
             continue
         if (
@@ -33,12 +34,12 @@ def shapeclass(cls):
 
     for name, value in cls.__dict__.items():
         if (
-            name not in cls.__annotations__
+            name not in annotations
             and not isinstance(value, Field)
             and not isinstance(value, StaticProperty)
         ):
             continue
-        type_ = cls.__annotations__.get(name, None)
+        type_ = annotations.get(name, None)
         if (
             type_ is not None
             and hasattr(type_, "__origin__")
@@ -69,6 +70,8 @@ def sample(shape, context=None):
 
     if isinstance(shape, Provider):
         return shape.sample(context)
+    elif not is_dataclass(shape):
+        return shape
 
     x = deepcopy(shape)
     context = context.subcontext(x.__class__.__name__)
@@ -96,6 +99,5 @@ class StaticProperty:
         self.fn = fn
 
 
-# TODO test
 def staticProperty(fn):
     return StaticProperty(fn)
