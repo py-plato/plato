@@ -18,7 +18,7 @@ class Address:
     city: str
     zip_code: str
     country: str
-    name: str = "uiae"  # FIXME providers in base classes do not run
+    name: str = fake.name()
 
 
 @shapeclass
@@ -28,7 +28,7 @@ class GermanPostalCodeWithCity:
 
 
 @shapeclass
-class GermanAddress:
+class GermanAddress(Address):
     street: str = fake["de-DE"].street_address()
 
     zip_code_and_city = Shared(GermanPostalCodeWithCity())
@@ -56,7 +56,7 @@ class CanadianPostalCodeWithCityProvider(Provider):
 
 
 @shapeclass
-class CanadianAddress:
+class CanadianAddress(Address):
     street: str = fake["en-CA"].street_address()
 
     zip_code_and_city = Shared(CanadianPostalCodeWithCityProvider())
