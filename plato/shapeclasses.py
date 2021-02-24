@@ -1,5 +1,5 @@
 from copy import deepcopy
-from dataclasses import dataclass, is_dataclass, make_dataclass, Field
+from dataclasses import dataclass, is_dataclass, make_dataclass, Field, fields
 from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
 
@@ -73,27 +73,8 @@ def sample(shape, context=None):
     x = deepcopy(shape)
     context = context.subcontext(x.__class__.__name__)
 
-    for field_name in x.__annotations__:
-        type_ = x.__annotations__.get(field_name, ClassVar[Any])
-        if (
-            hasattr(type_, "__origin__")
-            and getattr(type_, "__origin__") is ClassVar[Any].__origin__
-        ):
-            continue
-        field = getattr(x, field_name)
-        if is_dataclass(field):
-            value = sample(
-                field, context.subcontext(field_name)
-            )  # FIXME field vs class name?
-            setattr(x, field_name, value)
-        elif isinstance(field, Provider):
-            value = field.sample(context.subcontext(field_name))
-            setattr(x, field_name, value)
-    for field_name in dir(x):
-        if field_name in x.__annotations__ or field_name in x.__class__.__dict__:
-            continue
-        if field_name == "__class__":
-            continue
+    for field_def in fields(x):
+        field_name = field_def.name
         field = getattr(x, field_name)
         if is_dataclass(field):
             value = sample(
