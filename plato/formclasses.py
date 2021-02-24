@@ -7,14 +7,6 @@ from .context import get_root
 from .providers import Provider
 
 
-class _FormclassProvider(type):
-    def sample(self, context):
-        return self()
-
-
-Provider.register(_FormclassProvider)
-
-
 post_sample_registry = WeakKeyDictionary()
 
 
