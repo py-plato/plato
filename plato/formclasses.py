@@ -1,8 +1,8 @@
-from dataclasses import is_dataclass, make_dataclass, Field, fields
+from dataclasses import is_dataclass, make_dataclass, fields
 from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
 
-from .context import get_root
+from .context import get_root_context
 from .providers import Provider
 
 
@@ -62,7 +62,7 @@ formProperty = _FormProperty
 
 def sample(form, context=None):
     if context is None:
-        context = get_root().subcontext(form.__class__.__name__)
+        context = get_root_context(form.__class__)
 
     if isinstance(form, Provider):
         return form.sample(context)
