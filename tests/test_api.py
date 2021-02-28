@@ -273,6 +273,34 @@ def test_shared_values_are_independent_across_instances():
     assert sample(TestData()).field != sample(TestData()).field
 
 
+def test_shared_values_are_also_shared_in_subinstance():
+    @formclass
+    class Inner:
+        field: int
+
+    @formclass
+    class Outer:
+        field: int = Shared(CountingProvider())
+        child: Inner = Inner(field)
+
+    data = sample(Outer())
+    assert data.field == data.child.field
+
+
+def test_shared_values_are_independent_across_different_field_instances():
+    @formclass
+    class Inner:
+        field: int = Shared(CountingProvider())
+
+    @formclass
+    class Outer:
+        child0: Inner = Inner()
+        child1: Inner = Inner()
+
+    data = sample(Outer())
+    assert data.child0.field != data.child1.field
+
+
 def test_nonshared_dataclass_field_access():
     @dataclass
     class Data:
