@@ -1,4 +1,3 @@
-from copy import deepcopy
 from dataclasses import is_dataclass, make_dataclass, Field, fields
 from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
@@ -63,34 +62,23 @@ formProperty = _FormProperty
 
 def sample(form, context=None):
     if context is None:
-        context = get_root()
+        context = get_root().subcontext(form.__class__.__name__)
 
     if isinstance(form, Provider):
         return form.sample(context)
     elif not is_dataclass(form):
         return form
 
-    context = context.subcontext(form.__class__.__name__)
-
-    value_dict = {}
-
-    for field_def in fields(form):
-        field_name = field_def.name
-        field = getattr(form, field_name)
-        if is_dataclass(field):
-            value = sample(
-                field, context.subcontext(field_name)
-            )  # FIXME field vs class name?
-            value_dict[field_name] = value
-        elif isinstance(field, Provider):
-            value = field.sample(context.subcontext(field_name))
-            value_dict[field_name] = value
-        else:
-            value_dict[field_name] = field
-
-    x = form.__class__(**value_dict)
+    field_values = {
+        field_def.name: sample(
+            getattr(form, field_def.name), context.subcontext(field_def.name)
+        )
+        for field_def in fields(form)
+    }
+    instance = form.__class__(**field_values)
 
     if form.__class__ in _post_init_registry:
         for name, fn in _post_init_registry[form.__class__].items():
-            setattr(x, name, sample(fn(x), context.subcontext(name)))
-    return x
+            setattr(instance, name, sample(fn(instance), context.subcontext(name)))
+
+    return instance
