@@ -107,10 +107,10 @@ class OrderLine:
     locale: str
     quantity: int = fake.pyint(1, 10)
     product: Product = Product()
-    price: Price = None
 
-    def __post_init__(self):
-        self.price = Price(self.locale)
+    @formProperty
+    def price(self) -> Price:
+        return Price(self.locale)
 
 
 class OrderNumber(Provider):
@@ -120,9 +120,6 @@ class OrderNumber(Provider):
         order_no = f"ABC-{self.numbers_issued:05d}"
         self.numbers_issued += 1
         return order_no
-
-    def __deepcopy__(self, memo):
-        return self
 
 
 class ListProvider(Provider):

@@ -1,4 +1,3 @@
-from copy import deepcopy
 from functools import partial
 
 from faker import Faker
