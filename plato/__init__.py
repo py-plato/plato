@@ -1,3 +1,3 @@
 from .context import seed
 from .providers import Provider, Shared
-from .formclasses import formclass, sample
+from .formclasses import formclass, formProperty, sample
