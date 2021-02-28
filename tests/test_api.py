@@ -19,9 +19,6 @@ class CountingProvider(Provider):
         self.count += 1
         return self.count
 
-    def __deepcopy__(self, memo):
-        return self
-
 
 class SeedProvider(Provider):
     def sample(self, context):

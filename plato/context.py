@@ -1,13 +1,19 @@
 import random
 from collections import defaultdict
 from hashlib import blake2b
-from typing import Dict
+from typing import Any, Dict
 
 
 class Context:
-    def __init__(self, hasher: blake2b):
+    def __init__(
+        self, hasher: blake2b, parent: "Context" = None, meta: Dict[Any, Any] = None
+    ):
         self._hasher = hasher
         self._type_counts: Dict[str, int] = defaultdict(lambda: 0)
+        if meta is None:
+            meta = {}
+        self.parent = parent
+        self.meta = meta
 
         self.seed = self._hasher.digest()
         self.rng = random.Random(self.seed)
@@ -18,7 +24,7 @@ class Context:
         subhasher.update(_int2bytes(self._type_counts[class_name]))
         self._type_counts[class_name] += 1
 
-        return Context(subhasher)
+        return Context(subhasher, self, dict(self.meta))
 
 
 def seed(value: int):

@@ -26,13 +26,11 @@ class FieldProvider(Provider):
 class Shared(Provider):
     def __init__(self, provider):
         self.provider = provider
-        self._sampled = False
-        self._value = None
 
     def sample(self, context):
         from ..formclasses import sample
 
-        if not self._sampled:
-            self._value = sample(self.provider, context)
-            self._sampled = True
-        return self._value
+        if self not in context.parent.meta:
+            context.parent.meta[self] = sample(self.provider, context)
+
+        return context.parent.meta[self]

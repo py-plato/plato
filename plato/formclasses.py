@@ -70,20 +70,25 @@ def sample(form, context=None):
     elif not is_dataclass(form):
         return form
 
-    x = deepcopy(form)
-    context = context.subcontext(x.__class__.__name__)
+    context = context.subcontext(form.__class__.__name__)
 
-    for field_def in fields(x):
+    value_dict = {}
+
+    for field_def in fields(form):
         field_name = field_def.name
-        field = getattr(x, field_name)
+        field = getattr(form, field_name)
         if is_dataclass(field):
             value = sample(
                 field, context.subcontext(field_name)
             )  # FIXME field vs class name?
-            setattr(x, field_name, value)
+            value_dict[field_name] = value
         elif isinstance(field, Provider):
             value = field.sample(context.subcontext(field_name))
-            setattr(x, field_name, value)
+            value_dict[field_name] = value
+        else:
+            value_dict[field_name] = field
+
+    x = form.__class__(**value_dict)
 
     if form.__class__ in _post_init_registry:
         for name, fn in _post_init_registry[form.__class__].items():

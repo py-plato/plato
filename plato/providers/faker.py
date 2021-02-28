@@ -20,9 +20,6 @@ class FromFaker:
     def __getitem__(self, key):
         return FromFaker(self.faker[key])
 
-    def __deepcopy__(self, memo):
-        return FromFaker(self.faker)
-
 
 class FakerMethodProvider(Provider):
     def __init__(self, faker, method, *args, **kwargs):
@@ -34,11 +31,3 @@ class FakerMethodProvider(Provider):
     def sample(self, context):
         self.faker.seed_instance(context.seed)
         return self.method(*self.args, **self.kwargs)
-
-    def __deepcopy__(self, memo):
-        return FakerMethodProvider(
-            self.faker,
-            self.method,
-            *deepcopy(self.args, memo),
-            **deepcopy(self.kwargs, memo),
-        )
