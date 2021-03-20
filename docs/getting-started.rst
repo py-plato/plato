@@ -117,4 +117,4 @@ Next steps
 ----------
 
 * :doc:`user-guide`
-* :doc:`api`
+* :doc:`api/modules`
