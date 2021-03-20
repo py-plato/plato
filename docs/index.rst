@@ -6,9 +6,16 @@
 Welcome to Plato's documentation!
 =================================
 
+Plato makes it easy to generate complex,
+but consistent and realistic data for tests
+with a declarative syntax
+inspired by dataclasses.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   vision
 
 
 
