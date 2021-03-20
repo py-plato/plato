@@ -16,15 +16,15 @@ In this example we generate data for a customer
 with a name, email, and billing address.
 
 First,
-we import the *formclass* and *formProperty* decorators,
-as well as the *sample* function.
+we import the `.formclass` and `.formProperty` decorators,
+as well as the `~plato.formclasses.sample()` function.
 These are the most important objects in Plato
 and you will import them most of the time
 when working with Plato.
-We also import *FromFaker*
+We also import `.FromFaker`
 which allows us to generate some realistic sounding values
 with the excellent `Faker library <https://faker.readthedocs.io/en/master/>`_.
-Because we need an actual instance of *FromFaker*,
+Because we need an actual instance of `.FromFaker`,
 we also create that.
 
 .. testcode::
@@ -34,7 +34,7 @@ we also create that.
     
     fake = FromFaker()
 
-Next, we define our first *formclass*
+Next, we define our first `.formclass`
 to generate addresses.
 
 .. testcode::
@@ -48,7 +48,7 @@ to generate addresses.
         
 Note the similarities to Python's :py:mod:`dataclasses`.
     
-1. We add the *formclass* decorator to mark the class as a formclass.
+1. We add the `.formclass` decorator to mark the class as a formclass.
 2. We define a number of fields with a type annotation.
    We use the *fake* object to declare that the data should be generated
    following specific Faker patterns.
@@ -70,23 +70,23 @@ Note the similarities to Python's :py:mod:`dataclasses`.
         def email(self) -> str:
             return f"{self.first_name}.{self.last_name}@example.com"
             
-4. We can use the ``Address`` *formclass*
+4. We can use the *Address* `.formclass`
    to build up hierarchically structured data.
    The *billing_address* will be filled with a generated address.
 5. Standard Python properties can be used to add attributes for derived data.
-6. Plato also adds a special kind of property, the *formProperty*.
+6. Plato also adds a special kind of property, the `.formProperty`.
    It is similar
    but allows to be assigned a different value
    when the data is generated.
    
-By using the *sample* method
-on a *formclass* instance,
+By using the `~plato.formclasses.sample()` method
+on a `.formclass` instance,
 a Python :py:func:`~dataclasses.dataclass` instance
 containing the desired test data is generated.
-We can use standard *dataclass* functions,
-for example *asdict* to convert it into a dictionary
+We can use standard :py:func:`~dataclasses.dataclass` functions,
+for example :py:func:`~dataclasses.asdict` to convert it into a dictionary
 (or some other desired format),
-and than print it nicely with *pprint*.
+and than print it nicely with :py:func:`~pprint.pprint`.
 
 .. testcode::
 
@@ -105,7 +105,7 @@ and than print it nicely with *pprint*.
      'first_name': 'Denise',
      'last_name': 'Wright'} 
      
-If you sample the same *formclass* multiple times,
+If you sample the same `.formclass` multiple times,
 you will get different values each time.
 This allows to generate larger datasets easily.
 However,
