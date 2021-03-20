@@ -15,7 +15,10 @@ inspired by dataclasses.
    :maxdepth: 2
    :caption: Contents:
    
+   getting-started
+   user-guide
    vision
+   api
 
 
 
