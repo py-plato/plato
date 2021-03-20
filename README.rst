@@ -117,7 +117,7 @@ Here is a very roughly sorted list of additional features and to-dos to consider
 Alternatives
 ------------
 
-* `Faker <https://faker.readthedocs.io/en/master/>`_ is excellent for Generating
+* `Faker <https://faker.readthedocs.io/en/master/>`_ is excellent for generating
   individual pieces of information such as a realistic name, a bank account
   number, a street address etc. However, it does not provide a convenient way
   to generate more complex objects.
