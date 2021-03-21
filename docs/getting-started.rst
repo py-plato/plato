@@ -27,7 +27,13 @@ with the excellent `Faker library <https://faker.readthedocs.io/en/master/>`_.
 Because we need an actual instance of `.FromFaker`,
 we also create that.
 
-.. testcode::
+.. testsetup:: getting-started
+
+    import plato
+    
+    plato.seed(0)
+
+.. testcode:: getting-started
 
     from plato import formclass, derivedfield, sample
     from plato.providers.faker import FromFaker
@@ -37,7 +43,7 @@ we also create that.
 Next, we define our first `.formclass`
 to generate addresses.
 
-.. testcode::
+.. testcode:: getting-started
 
     @formclass  # (1)
     class Address:
@@ -54,7 +60,7 @@ Note the similarities to Python's :py:mod:`dataclasses`.
    following specific Faker patterns.
 3. We can also just assign a constant value as default.
     
-.. testcode::
+.. testcode:: getting-started
 
     @formclass
     class Customer:
@@ -86,14 +92,14 @@ for example :py:func:`~dataclasses.asdict` to convert it into a dictionary
 (or some other desired format),
 and than print it nicely with :py:func:`~pprint.pprint`.
 
-.. testcode::
+.. testcode:: getting-started
 
     from dataclasses import asdict
     from pprint import pprint
 
     pprint(asdict(sample(Customer())))
 
-.. testoutput::
+.. testoutput:: getting-started
 
     {'billing_address': {'city': 'North Reginaburgh',
                          'country': 'USA',

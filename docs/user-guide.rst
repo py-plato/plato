@@ -1,9 +1,14 @@
 User Guide
 ==========
 
-.. testsetup::
+.. testsetup:: *
 
-    from plato import derivedfield, formclass, sample
+    import plato
+    from plato import derivedfield, formclass, sample, Shared
+    from plato.providers.faker import FromFaker
+
+    plato.seed(0)
+    fake = FromFaker()
 
 Defining formclasses
 --------------------
@@ -92,7 +97,7 @@ that it allows you to also assign `.providers`
 to have data generated dynamically.
 
 In the following example we will use the `.FromFaker` provider
-that exposes the API of the `Faker <https://faker.readthedocs.io/en/master/>`_
+that exposes the API of the `Faker <https://faker.readthedocs.io/en/latest/>`_
 library for generating basic values.
 
 .. testcode::
@@ -325,46 +330,325 @@ when needed.
     {'email': 'my-alias@mailz.org', 'first_name': 'Melissa', 'last_name': 'Harris'}
 
 
-Sharing values
-^^^^^^^^^^^^^^
-
 Using formclasses
 -----------------
 
-sample
+When instantiating a `.formclass`,
+you obtain a "template" for test data.
+This allows to change
+specific values or providers
+as required by the respective test case.
+To generate the actual test data,
+call the `~plato.formclasses.sample()`
+on such a "template".
+
+.. testcode::
+
+    fake = FromFaker()
+
+    @formclass
+    class User:
+        first_name: str = fake.first_name()
+        last_name: str = fake.last_name()
+        bio: str = ""
+
+        @derivedfield
+        def email(self) -> str:
+            return f"{self.first_name}.{self.last_name}@example.net"
+            
+    from dataclasses import asdict
+    from pprint import pprint
+
+    template = User(first_name="Plato", bio=fake.sentence())
+    pprint(asdict(sample(template)))
+    
+.. testoutput::
+
+    {'bio': 'Leg forget run book rise stage house.',
+     'email': 'Plato.Wright@example.net',
+     'first_name': 'Plato',
+     'last_name': 'Wright'}
+     
+Sampling the same template multiple times will give different values;
+making it easy to generate multiple test data instances.
+
+.. testcode::
+
+    pprint(asdict(sample(template)))
+    pprint(asdict(sample(template)))
+    
+.. testoutput::
+
+    {'bio': 'Station bag whole mission west amount son car.',
+     'email': 'Plato.Harris@example.net',
+     'first_name': 'Plato',
+     'last_name': 'Harris'}
+    {'bio': 'Though each energy catch pick ever strong bed.',
+     'email': 'Plato.Hernandez@example.net',
+     'first_name': 'Plato',
+     'last_name': 'Hernandez'}
+     
 
 Seeding and reproducibility
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-setting seed
-removing/adding fields
+Test failures should be reproducible.
+This also requires that the test data used can be reproduced.
+Plato ensures this
+by always using the same default random number generator seed.
+
+If desired,
+the seed can be set manually.
+You might want to configure your test framework
+to do this before every test
+so that the set of executed tests does not affect the test data.
+
+.. testcode::
+
+    @formclass
+    class MyFormclass:
+        first_name: str = fake.first_name()
+        
+    plato.seed(42)
+    print(sample(MyFormclass()).first_name)
+    plato.seed(42)
+    print(sample(MyFormclass()).first_name)
+    
+.. testoutput::
+
+    Billy
+    Billy
+
+To make things even more reproducible,
+Plato is designed in a way
+that leaves generated values unaffected
+if fields are added to or removed from a `.formclass`.
+
+.. testcode::
+
+    @formclass
+    class MyFormclass:
+        last_name: str = fake.last_name()
+
+    plato.seed(42)
+    print(sample(MyFormclass()).last_name)
+
+    @formclass
+    class MyFormclass:
+        first_name: str = fake.first_name()
+        last_name: str = fake.last_name()
+        
+    plato.seed(42)
+    print(sample(MyFormclass()).last_name)
+
+.. testoutput::
+
+    Bullock
+    Bullock
+
+However,
+generated values will change if the field name changes.
+
+.. testcode::
+
+    @formclass
+    class MyFormclass:
+        first_name: str = fake.last_name()
+
+    plato.seed(42)
+    print(sample(MyFormclass()).first_name)
+
+    @formclass
+    class MyFormclass:
+        last_name: str = fake.last_name()
+
+    plato.seed(42)
+    print(sample(MyFormclass()).last_name)
+
+.. testoutput::
+
+    Williams
+    Bullock
+
 
 Providers
 ---------
 
-TODO
+While a `.formclass` defines the hierarchical structure of test data,
+a `.Provider` defines how individual values are generated.
+
+Currently,
+Plato does not really have any providers of its own,
+but provides the `.FromFaker` class to create providers
+based on the `Faker <https://faker.readthedocs.io/en/latest/>`_ library.
+Its delegates all method calls to Faker,
+but returns a `.Provider` usuable with Plato,
+instead of a value.
+
+.. testcode::
+
+    fake = FromFaker()
+    print(fake.name())
+    print(sample(fake.name()))
+    
+.. testoutput::
+
+    <plato.providers.faker.FakerMethodProvider object at 0x...>
+    Randy Garcia
+    
+The `.FromFaker` can be passed an existing :py:doc:`Faker <fakerclass>` instance.
+This allows for example to make use of Faker's localization feature.
+
+.. testcode::
+
+    from faker import Faker
+
+    fake = FromFaker(Faker(["en-US", "de-DE"]))
+
+    print("English name:", sample(fake["en-US"].name()))
+    print("German name:", sample(fake["de-DE"].name()))
+    
+.. testoutput::
+
+    English name: Danielle Fletcher
+    German name: Prof. Helmut Hentschel
+    
+.. testcleanup::
+
+    fake = FromFaker()
+
+
+Sharing values
+^^^^^^^^^^^^^^
+
+Sometimes it is desirable
+to share the value generated with a provider
+across multiple fields of a `.formclass`.
+This can be done with the special `.Shared` provider decorator.
+
+.. testcode:: shared
+
+    @formclass
+    class Address:
+        street: str = fake.street_address()
+        city: str = fake.city()
+        postal_code: str = fake.postcode()
+
+    @formclass
+    class Order:
+        billing_address: Address = Shared(Address())
+        shipping_address: Address = billing_address
+
+    from dataclasses import asdict
+    from pprint import pprint
+
+    pprint(asdict(sample(Order())))
+
+.. testoutput:: shared
+
+    {'billing_address': {'city': 'North Reginaburgh',
+                         'postal_code': '03314',
+                         'street': '310 Edwin Shore Suite 986'},
+     'shipping_address': {'city': 'North Reginaburgh',
+                          'postal_code': '03314',
+                          'street': '310 Edwin Shore Suite 986'}}
+
+This is in particular useful to include fields
+of a child class
+within the parent class.
+
+.. testcode:: shared
+
+    @formclass
+    class Customer:
+        mailing_address: Address = Shared(Address())
+        postal_code: str = mailing_address.postal_code
+
+    pprint(asdict(sample(Customer())))
+    
+Note that both *postal_codes* in the output are the same:
+    
+.. testoutput:: shared
+
+    {'mailing_address': {'city': 'New Shane',
+                         'postal_code': '20059',
+                         'street': '81646 Rebecca Rapids Suite 486'},
+     'postal_code': '20059'}
 
 
 Implementing custom providers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO
+Custom providers can be implemented
+with the abstract `.Provider` base class.
+It only requires
+to provide an implementation
+of the :py:meth:`.Provider.sample` method.
+That method gets passed a `.Context`
+which provides a `.Context.seed`
+that should be used as random number generator seed
+to ensure reproducability.
+Alternatively,
+a seeded :py:class:`~random.Random` instance is provided as `.Context.rng`.
+
+.. testcode:: provider
+
+    from plato.context import Context
+    from plato.providers import Provider
+
+    class RandomFloatProvider(Provider):
+        def sample(self, context: Context) -> float:
+            return context.rng.random()
+            
+    @formclass
+    class MyFormclass:
+        number: float = RandomFloatProvider()
+
+    print(sample(MyFormclass()).number)
+
+.. testoutput:: provider
+
+    0.9355289927699928
 
 
 Recipes and typical use cases
 -----------------------------
 
-TODO
-
 
 Convert to JSON
 ^^^^^^^^^^^^^^^
 
-TODO
+To convert generated test data to JSON,
+use :py:func:`~dataclasses.asdict` to convert the object into a dictionary first,
+then use the :py:mod:`json` module to convert that dictionary to JSON.
+
+.. testcode:: json
+
+    from dataclasses import asdict
+    import json
+
+    @formclass
+    class MyFormclass:
+        string_value: str = fake.name()
+        number_value: int = 42
+
+    data = sample(MyFormclass())
+    json = json.dumps(asdict(data))
+    print(json)
+
+.. testoutput:: json
+
+    {"string_value": "Edwin Ford", "number_value": 42}
 
 
 Use Plato as builder
 ^^^^^^^^^^^^^^^^^^^^
+
+TODO
+
+
+High-level states / variants
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 TODO
 
