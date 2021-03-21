@@ -430,3 +430,28 @@ def test_overwrite_derivedfield():
 
     assert sample(TestData(derived="provided value")).derived == "provided value"
 
+
+def test_derivedfield_initialization_order():
+    @formclass
+    class TestData:
+        @derivedfield
+        def derived0(self) -> int:
+            return 1
+
+        @derivedfield
+        def derived1(self) -> int:
+            return self.derived0 + 1
+
+        @derivedfield
+        def derived2(self) -> int:
+            return self.derived1 + self.derived0
+
+        @derivedfield
+        def derived3(self) -> int:
+            return self.derived2 + self.derived1
+
+        @derivedfield
+        def derived4(self) -> int:
+            return self.derived3 + self.derived2
+
+    assert sample(TestData()).derived4 == 8
