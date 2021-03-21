@@ -419,3 +419,14 @@ def test_derivedfield_with_formclass():
     field_map = {f.name: f.type for f in fields(TestData)}
     assert field_map["derived"] == str
     assert sample(TestData()).derived.field == "provider value"
+
+
+def test_overwrite_derivedfield():
+    @formclass
+    class TestData:
+        @derivedfield
+        def derived(self) -> str:
+            "derived value"
+
+    assert sample(TestData(derived="provided value")).derived == "provided value"
+

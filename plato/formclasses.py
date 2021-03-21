@@ -79,6 +79,9 @@ def sample(form, context=None):
 
     if form.__class__ in _post_init_registry:
         for name, fn in _post_init_registry[form.__class__].items():
-            setattr(instance, name, sample(fn(instance), context.subcontext(name)))
+            value = getattr(instance, name, None)
+            if value is None:
+                value = fn(instance)
+            setattr(instance, name, sample(value, context.subcontext(name)))
 
     return instance
