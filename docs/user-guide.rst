@@ -3,7 +3,7 @@ User Guide
 
 .. testsetup::
 
-    from plato import formclass, sample
+    from plato import derivedfield, formclass, sample
 
 Defining formclasses
 --------------------
@@ -284,6 +284,45 @@ to other types.
 
 Derived fields
 ^^^^^^^^^^^^^^
+
+It can be useful to derive the value of certain fields
+from other fields.
+This can be achieved
+by declaring a method with the `.derivedfield` decorator.
+
+.. testcode::
+
+    @formclass
+    class User:
+        first_name: str = fake.first_name()
+        last_name: str = fake.last_name()
+
+        @derivedfield
+        def email(self) -> str:
+            return f"{self.first_name}.{self.last_name}@example.net"
+
+    from dataclasses import asdict
+    from pprint import pprint
+    
+    pprint(asdict(sample(User())))
+    
+.. testoutput::
+
+    {'email': 'Denise.Wright@example.net',
+     'first_name': 'Denise',
+     'last_name': 'Wright'}
+     
+A derived field can be overwritten
+with a different value or provider
+when needed.
+
+.. testcode::
+
+    pprint(asdict(sample(User(email="my-alias@mailz.org"))))
+
+.. testoutput::
+
+    {'email': 'my-alias@mailz.org', 'first_name': 'Melissa', 'last_name': 'Harris'}
 
 
 Sharing values
