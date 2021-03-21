@@ -1,5 +1,5 @@
 from dataclasses import dataclass, fields
-from plato.formclasses import formProperty
+from plato.formclasses import derivedfield
 import typing
 import pytest
 
@@ -379,12 +379,12 @@ def test_shared_formclass_field_access():
     assert test_data.field1 == 1
 
 
-def test_formProperty():
+def test_derivedfield():
     @formclass
     class TestData:
         field: str = "default"
 
-        @formProperty
+        @derivedfield
         def derived(self) -> str:
             return self.field
 
@@ -393,10 +393,10 @@ def test_formProperty():
     assert sample(TestData(field="actual")).derived == "actual"
 
 
-def test_formProperty_with_provider():
+def test_derivedfield_with_provider():
     @formclass
     class TestData:
-        @formProperty
+        @derivedfield
         def derived(self) -> str:
             return FixedProvider()
 
@@ -405,14 +405,14 @@ def test_formProperty_with_provider():
     assert sample(TestData()).derived == "provider value"
 
 
-def test_formProperty_with_formclass():
+def test_derivedfield_with_formclass():
     @formclass
     class Derived:
         field: str = FixedProvider()
 
     @formclass
     class TestData:
-        @formProperty
+        @derivedfield
         def derived(self) -> str:
             return Derived()
 

@@ -1,13 +1,12 @@
 from dataclasses import dataclass, asdict
 from decimal import Decimal
-from plato.formclasses import formProperty
 from pprint import pprint
 
 from faker import Faker
 
 from plato import Provider, sample, formclass, Shared
 from plato.providers.faker import FromFaker
-from plato.formclasses import formProperty
+from plato.formclasses import derivedfield
 
 fake = FromFaker(Faker(["en-CA", "de-DE"]))
 
@@ -91,7 +90,7 @@ class Price:
     # locale: Hidden[str]
     base_price: Decimal = fake.pydecimal(1, 2)
 
-    @formProperty
+    @derivedfield
     def vat_percent(self) -> Decimal:
         return SelectProvider(
             self.locale,
@@ -108,7 +107,7 @@ class OrderLine:
     quantity: int = fake.pyint(1, 10)
     product: Product = Product()
 
-    @formProperty
+    @derivedfield
     def price(self) -> Price:
         return Price(self.locale)
 
@@ -140,18 +139,18 @@ class Order:
 
     order_number: str = OrderNumber()  # globally unique
 
-    @formProperty
+    @derivedfield
     def billing_address(self) -> Address:
         return {
             "de-DE": GermanAddress(),
             "en-CA": CanadianAddress(),
         }[self.locale]
 
-    @formProperty
+    @derivedfield
     def shipping_address(self) -> Address:
         return self.billing_address
 
-    @formProperty
+    @derivedfield
     def order_lines(self) -> str:
         return ListProvider(1, 5, OrderLine(self.locale))
 

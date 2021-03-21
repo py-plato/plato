@@ -285,7 +285,6 @@ to other types.
 Derived fields
 ^^^^^^^^^^^^^^
 
-rename formProperty to derivedField?
 
 Sharing values
 ^^^^^^^^^^^^^^

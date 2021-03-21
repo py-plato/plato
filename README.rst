@@ -31,7 +31,7 @@ inspired by dataclasses.
         def fullname(self) -> str:
             return f"{self.first_name} {self.last_name}"
 
-        @formProperty
+        @derivedfield
         def email(self) -> str:
             return f"{self.first_name}.{self.last_name}@example.com"
             

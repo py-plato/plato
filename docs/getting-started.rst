@@ -16,7 +16,7 @@ In this example we generate data for a customer
 with a name, email, and billing address.
 
 First,
-we import the `.formclass` and `.formProperty` decorators,
+we import the `.formclass` and `.derivedfield` decorators,
 as well as the `~plato.formclasses.sample()` function.
 These are the most important objects in Plato
 and you will import them most of the time
@@ -29,7 +29,7 @@ we also create that.
 
 .. testcode::
 
-    from plato import formclass, formProperty, sample
+    from plato import formclass, derivedfield, sample
     from plato.providers.faker import FromFaker
     
     fake = FromFaker()
@@ -66,7 +66,7 @@ Note the similarities to Python's :py:mod:`dataclasses`.
         def fullname(self) -> str:
             return f"{self.first_name} {self.last_name}"
     
-        @formProperty  # (6)
+        @derivedfield  # (6)
         def email(self) -> str:
             return f"{self.first_name}.{self.last_name}@example.com"
             
@@ -74,10 +74,8 @@ Note the similarities to Python's :py:mod:`dataclasses`.
    to build up hierarchically structured data.
    The *billing_address* will be filled with a generated address.
 5. Standard Python properties can be used to add attributes for derived data.
-6. Plato also adds a special kind of property, the `.formProperty`.
-   It is similar
-   but allows to be assigned a different value
-   when the data is generated.
+6. Plato also adds the possibility for fields that have values derived from
+   other fields by defaults.
    
 By using the `~plato.formclasses.sample()` method
 on a `.formclass` instance,

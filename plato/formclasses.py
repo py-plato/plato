@@ -23,7 +23,7 @@ def formclass(cls):
     for name, value in cls.__dict__.items():
         if name in {"__annotations__", "__dict__"}:
             continue
-        if isinstance(value, _FormProperty):
+        if isinstance(value, _DerivedField):
             fields.append((name, value.type))
             post_init_fns[name] = value.fn
             value = None
@@ -48,7 +48,7 @@ def _is_classvar_type(type_):
     )
 
 
-class _FormProperty:
+class _DerivedField:
     def __init__(self, fn):
         self.fn = fn
 
@@ -57,7 +57,7 @@ class _FormProperty:
         return getattr(self.fn, "__annotations__", {}).get("return", Any)
 
 
-formProperty = _FormProperty
+derivedfield = _DerivedField
 
 
 def sample(form, context=None):
