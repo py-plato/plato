@@ -12,6 +12,14 @@ plato.providers.base module
    :undoc-members:
    :show-inheritance:
 
+plato.providers.common module
+-----------------------------
+
+.. automodule:: plato.providers.common
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 plato.providers.faker module
 ----------------------------
 
