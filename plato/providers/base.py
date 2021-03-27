@@ -6,13 +6,15 @@ class Provider(ABC):
     def sample(self, context):
         ...
 
+
+class WithFieldAccess:
     def __getattr__(self, field_name: str):
         if field_name.startswith("__") and field_name.endswith("__"):
             raise AttributeError
         return FieldProvider(self, field_name)
 
 
-class FieldProvider(Provider):
+class FieldProvider(Provider, WithFieldAccess):
     def __init__(self, parent: Provider, field_name: str):
         self.parent = parent
         self.field_name = field_name
@@ -23,7 +25,7 @@ class FieldProvider(Provider):
         return getattr(sample(self.parent, context), self.field_name)
 
 
-class Shared(Provider):
+class Shared(Provider, WithFieldAccess):
     def __init__(self, provider):
         self.provider = provider
 

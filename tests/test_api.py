@@ -1,4 +1,5 @@
 from dataclasses import dataclass, fields
+from plato.providers.base import WithFieldAccess
 from plato.formclasses import derivedfield
 import typing
 import pytest
@@ -25,7 +26,7 @@ class SeedProvider(Provider):
         return context.seed
 
 
-class SequenceProvider(Provider):
+class SequenceProvider(Provider, WithFieldAccess):
     def __init__(self, values):
         self.values = values
         self._n_values_sampled = 0
