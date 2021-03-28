@@ -90,6 +90,9 @@ class Context:
         return Context(subhasher, self, dict(self.meta))
 
 
+_TYPE_COUNTS: Dict[Type, int] = defaultdict(lambda: 0)
+
+
 def seed(value: int):
     """Set the global Plato base seed."""
     # pylint: disable=global-statement
@@ -105,9 +108,6 @@ def _create_hasher(hasher_seed: int) -> blake2b:
     hasher = blake2b()
     hasher.update(_int2bytes(hasher_seed))
     return hasher
-
-
-_TYPE_COUNTS: Dict[Type, int] = defaultdict(lambda: 0)
 
 
 def get_root_context(type_: Type) -> Context:
