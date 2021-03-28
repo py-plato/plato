@@ -11,16 +11,23 @@ providers. Otherwise, you probably will not need them.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, TypeVar
+
+from typing_extensions import Protocol
 
 from plato.context import Context
 
+T = TypeVar("T", covariant=True)
 
-class Provider(ABC):
-    """Provider interface."""
 
-    @abstractmethod
-    def sample(self, context: Context) -> Any:
+class ProviderProtocol(Protocol[T]):
+    """Defines the Provider protocol.
+
+    This should only be used for typing. When implementing a
+    provider use the `.Provider` abstract base class.
+    """
+
+    def sample(self, context: Context) -> T:
         """Return a single value (sample) for the provider.
 
         Arguments
@@ -35,6 +42,14 @@ class Provider(ABC):
         Any
             The sampled value.
         """
+        ...
+
+
+class Provider(ABC, ProviderProtocol[T]):
+    """Provider interface."""
+
+    @abstractmethod
+    def sample(self, context: Context) -> T:
         ...
 
 
@@ -67,7 +82,7 @@ class WithAttributeAccess:
         foo
     """
 
-    def __getattr__(self, field_name: str):
+    def __getattr__(self: ProviderProtocol[T], field_name: str):
         if field_name.startswith("__") and field_name.endswith("__"):
             raise AttributeError
         return AttributeProvider(self, field_name)
@@ -84,7 +99,7 @@ class AttributeProvider(Provider, WithAttributeAccess):
         Name of the attribute to provide from the sampled object.
     """
 
-    def __init__(self, parent: Provider, attr_name: str):
+    def __init__(self, parent: ProviderProtocol[T], attr_name: str):
         self.parent = parent
         self.attr_name = attr_name
 

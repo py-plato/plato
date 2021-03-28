@@ -5,13 +5,31 @@ from collections import defaultdict
 from hashlib import blake2b
 from typing import Any, Dict, Type
 
+from typing_extensions import Protocol
+
+
+class Hasher(Protocol):
+    """Protocol of classes to perform incremental hashing."""
+
+    def copy(self) -> "Hasher":
+        """Create a copy of the current hasher state."""
+        ...
+
+    def update(self, data: bytes):
+        """Update the hash with *data*."""
+        ...
+
+    def digest(self) -> bytes:
+        """Return the current hash."""
+        ...
+
 
 class Context:
     """Context used in sampling from `.Provider` instances.
 
     Arguments
     ---------
-    hasher: hashlib.blake2b
+    hasher: Hasher
         Hasher used to derive the random number seed and to derive hashers for
         subcontexts.
     parent: Context, optional
@@ -38,7 +56,7 @@ class Context:
     """
 
     def __init__(
-        self, hasher: blake2b, parent: "Context" = None, meta: Dict[Any, Any] = None
+        self, hasher: Hasher, parent: "Context" = None, meta: Dict[Any, Any] = None
     ):
         self._hasher = hasher
         self.parent = parent
@@ -89,7 +107,7 @@ def _create_hasher(hasher_seed: int) -> blake2b:
     return hasher
 
 
-_TYPE_COUNTS = defaultdict(lambda: 0)
+_TYPE_COUNTS: Dict[Type, int] = defaultdict(lambda: 0)
 
 
 def get_root_context(type_: Type) -> Context:

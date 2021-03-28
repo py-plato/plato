@@ -4,7 +4,7 @@ library with Plato.
 
 from functools import partial
 
-from faker import Faker
+from faker import Faker  # type: ignore
 
 from .base import Provider
 

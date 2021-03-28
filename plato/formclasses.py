@@ -16,13 +16,15 @@ Plato's core API consists out of
 """
 
 from dataclasses import fields, is_dataclass, make_dataclass
-from typing import Any, ClassVar
+from typing import Any, Callable, ClassVar, Dict, Mapping
 from weakref import WeakKeyDictionary
 
 from .context import get_root_context
-from .providers.base import Provider
+from .providers.base import Provider, ProviderProtocol
 
-_post_init_registry = WeakKeyDictionary()
+_post_init_registry: Mapping[
+    object, Dict[str, Callable[[object], Any]]
+] = WeakKeyDictionary()
 
 
 def formclass(cls):
@@ -67,7 +69,7 @@ def formclass(cls):
     instance_fields = [
         (name, type_)
         for name, type_ in annotations.items()
-        if not _is_classvar_type(type_)
+        if not _type_origin_matches(type_, ClassVar[Any])
     ]
 
     namespace = {}
@@ -92,11 +94,10 @@ def formclass(cls):
     return dc
 
 
-def _is_classvar_type(type_):
-    # pylint: disable=no-member
+def _type_origin_matches(annotation, type_):
     return (
-        hasattr(type_, "__origin__")
-        and getattr(type_, "__origin__") is ClassVar[Any].__origin__
+        hasattr(annotation, "__origin__")
+        and getattr(annotation, "__origin__") is type_.__origin__
     )
 
 
@@ -122,7 +123,10 @@ class _DerivedField:
     @property
     def type(self):
         """Type annotation of the derived field."""
-        return getattr(self.fn, "__annotations__", {}).get("return", Any)
+        annotation = getattr(self.fn, "__annotations__", {}).get("return", Any)
+        if _type_origin_matches(annotation, ProviderProtocol[Any]):
+            annotation = annotation.__args__[0]
+        return annotation
 
 
 # pylint: disable=invalid-name

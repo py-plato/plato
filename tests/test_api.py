@@ -6,7 +6,7 @@ import pytest
 import plato
 from plato import Provider, Shared, formclass, sample
 from plato.formclasses import derivedfield
-from plato.providers.base import WithAttributeAccess
+from plato.providers.base import ProviderProtocol, WithAttributeAccess
 
 
 class FixedProvider(Provider):
@@ -399,7 +399,7 @@ def test_derivedfield_with_provider():
     @formclass
     class TestData:
         @derivedfield
-        def derived(self) -> str:
+        def derived(self) -> ProviderProtocol[str]:
             return FixedProvider()
 
     field_map = {f.name: f.type for f in fields(TestData)}
@@ -415,11 +415,11 @@ def test_derivedfield_with_formclass():
     @formclass
     class TestData:
         @derivedfield
-        def derived(self) -> str:
+        def derived(self) -> Derived:
             return Derived()
 
     field_map = {f.name: f.type for f in fields(TestData)}
-    assert field_map["derived"] == str
+    assert field_map["derived"] == Derived
     assert sample(TestData()).derived.field == "provider value"
 
 

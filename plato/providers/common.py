@@ -89,6 +89,9 @@ class Shared(Provider, WithAttributeAccess):
         self.provider = provider
 
     def sample(self, context: Context) -> Any:
+        if context.parent is None:
+            raise ValueError("Subcontext with set parent required.")
+
         if self not in context.parent.meta:
             context.parent.meta[self] = sample(self.provider, context)
 

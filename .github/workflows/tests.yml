@@ -20,6 +20,8 @@ jobs:
             run: poetry run isort --check-only .
           - name: pylint
             run: poetry run pylint plato
+          - name: Check static typing
+            run: poetry run mypy plato tests
 
     steps:
       - uses: actions/checkout@v2

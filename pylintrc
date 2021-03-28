@@ -434,6 +434,7 @@ good-names=i,
            ex,
            fn,
            Run,
+           T,
            _
 
 # Good variable names regexes, separated by a comma. If names match any regex,
