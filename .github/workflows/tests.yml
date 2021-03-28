@@ -9,7 +9,7 @@ on:
     - cron: '0 4 * * *'
 
 jobs:
-  code-style:
+  static-analysis:
     runs-on: ubuntu-latest
     strategy:
       matrix:
