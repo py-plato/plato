@@ -48,6 +48,9 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
+        include:
+          - python-version: 3.9
+            coverage: true
 
     steps:
       - uses: actions/checkout@v2
@@ -72,3 +75,8 @@ jobs:
 
       - name: Test with pytest
         run: poetry run pytest --verbose
+        if: ${{ !matrix.coverage }}
+      - name: Test and measure coverage with pytest
+        run: poetry run pytest --verbose --cov=plato --cov-report=xml
+        if: ${{ matrix.coverage }}
+      - uses: codecov/codecov-action@v1
