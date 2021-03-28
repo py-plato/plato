@@ -2,8 +2,8 @@
 
 from typing import Any
 
-from .base import Provider, WithAttributeAccess
 from ..context import Context
+from .base import Provider, WithAttributeAccess
 
 
 class Shared(Provider, WithAttributeAccess):

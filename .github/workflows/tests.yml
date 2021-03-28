@@ -11,6 +11,14 @@ on:
 jobs:
   code-style:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check:
+          - name: Check code-formatting
+            run: poetry run black --check .
+          - name: Check import sorting
+            run: poetry run isort --check-only
+
     steps:
       - uses: actions/checkout@v2
 

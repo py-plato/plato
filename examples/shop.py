@@ -1,12 +1,12 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from decimal import Decimal
 from pprint import pprint
 
 from faker import Faker
 
-from plato import Provider, sample, formclass, Shared
-from plato.providers.faker import FromFaker
+from plato import Provider, Shared, formclass, sample
 from plato.formclasses import derivedfield
+from plato.providers.faker import FromFaker
 
 fake = FromFaker(Faker(["en-CA", "de-DE"]))
 

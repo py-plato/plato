@@ -15,13 +15,12 @@ Plato's core API consists out of
     plato.seed(0)
 """
 
-from dataclasses import is_dataclass, make_dataclass, fields
+from dataclasses import fields, is_dataclass, make_dataclass
 from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
 
 from .context import get_root_context
 from .providers import Provider
-
 
 _post_init_registry = WeakKeyDictionary()
 

@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from pprint import pprint
 
-from plato import formclass, derivedfield, sample
+from plato import derivedfield, formclass, sample
 from plato.providers.faker import FromFaker
 
 fake = FromFaker()

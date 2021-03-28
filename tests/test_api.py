@@ -1,11 +1,12 @@
-from dataclasses import dataclass, fields
-from plato.providers.base import WithAttributeAccess
-from plato.formclasses import derivedfield
 import typing
+from dataclasses import dataclass, fields
+
 import pytest
 
 import plato
-from plato import Provider, sample, Shared, formclass
+from plato import Provider, Shared, formclass, sample
+from plato.formclasses import derivedfield
+from plato.providers.base import WithAttributeAccess
 
 
 class FixedProvider(Provider):
