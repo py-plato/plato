@@ -162,3 +162,15 @@ jobs:
           poetry publish -r testpypi --build
         env:
           POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_TOKEN }}
+
+      - name: Set version_name
+        id: version_name
+        run: echo ::set-output name=version_name::${GITHUB_REF#refs/*/}
+          
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: Initial release
+          tag_name: ${{ steps.version_name.outputs.version_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
