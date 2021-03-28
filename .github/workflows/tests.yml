@@ -26,6 +26,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+        
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+      - uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ runner.os }}-py3.9-venv-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-py3.9-venv-
 
       - uses: ./.github/actions/setup-project
 
@@ -45,6 +56,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+        
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+      - uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ runner.os }}-py${{ matrix.python-version }}-venv-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-py${{ matrix.python-version }}-venv-
 
       - uses: ./.github/actions/setup-project
 

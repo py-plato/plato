@@ -10,3 +10,5 @@ runs:
     - name: Install dependencies
       run: poetry install
       shell: bash
+      env:
+        POETRY_VIRTUALENVS_IN_PROJECT: true
