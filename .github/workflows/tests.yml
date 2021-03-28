@@ -18,6 +18,8 @@ jobs:
             run: poetry run black --check .
           - name: Check import sorting
             run: poetry run isort --check-only
+          - name: pylint
+            run: poetry run pylint plato
 
     steps:
       - uses: actions/checkout@v2

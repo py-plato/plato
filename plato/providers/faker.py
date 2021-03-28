@@ -55,13 +55,13 @@ class FromFaker:
     def __getattr__(self, name):
         if name.startswith("__") and name.endswith("__"):
             raise AttributeError
-        return partial(FakerMethodProvider, self.faker, getattr(self.faker, name))
+        return partial(_FakerMethodProvider, self.faker, getattr(self.faker, name))
 
     def __getitem__(self, key):
         return FromFaker(self.faker[key])
 
 
-class FakerMethodProvider(Provider):
+class _FakerMethodProvider(Provider):
     def __init__(self, faker, method, *args, **kwargs):
         self.faker = faker
         self.method = method

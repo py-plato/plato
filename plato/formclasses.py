@@ -11,7 +11,7 @@ Plato's core API consists out of
 
     from plato import formclass, sample
     import plato.providers.faker
-    
+
     plato.seed(0)
 """
 
@@ -20,7 +20,7 @@ from typing import Any, ClassVar
 from weakref import WeakKeyDictionary
 
 from .context import get_root_context
-from .providers import Provider
+from .providers.base import Provider
 
 _post_init_registry = WeakKeyDictionary()
 
@@ -64,7 +64,7 @@ def formclass(cls):
     post_init_fns = {}
 
     annotations = getattr(cls, "__annotations__", {})
-    fields = [
+    instance_fields = [
         (name, type_)
         for name, type_ in annotations.items()
         if not _is_classvar_type(type_)
@@ -75,24 +75,25 @@ def formclass(cls):
         if name in {"__annotations__", "__dict__"}:
             continue
         if isinstance(value, _DerivedField):
-            fields.append((name, value.type))
+            instance_fields.append((name, value.type))
             post_init_fns[name] = value.fn
             value = None
         namespace[name] = value
 
-    fields = [
+    instance_fields = [
         (name, type_, namespace.pop(name)) if name in namespace else (name, type_)
-        for name, type_ in fields
+        for name, type_ in instance_fields
     ]
 
     dc = make_dataclass(
-        cls.__name__, fields, bases=cls.__mro__[1:], namespace=namespace
+        cls.__name__, instance_fields, bases=cls.__mro__[1:], namespace=namespace
     )
     _post_init_registry[dc] = post_init_fns
     return dc
 
 
 def _is_classvar_type(type_):
+    # pylint: disable=no-member
     return (
         hasattr(type_, "__origin__")
         and getattr(type_, "__origin__") is ClassVar[Any].__origin__
@@ -108,6 +109,11 @@ class _DerivedField:
 
     When multiple methods are decorated with *derivedfield*, they run in order
     of declaration.
+
+    Attributes
+    ----------
+    fn: func
+        Decorated method.
     """
 
     def __init__(self, fn):
@@ -115,9 +121,11 @@ class _DerivedField:
 
     @property
     def type(self):
+        """Type annotation of the derived field."""
         return getattr(self.fn, "__annotations__", {}).get("return", Any)
 
 
+# pylint: disable=invalid-name
 derivedfield = _DerivedField
 
 
@@ -208,7 +216,7 @@ def sample(form, context=None):
 
     if isinstance(form, Provider):
         return form.sample(context)
-    elif not is_dataclass(form):
+    if not is_dataclass(form):
         return form
 
     field_values = {

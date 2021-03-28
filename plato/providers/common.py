@@ -3,6 +3,7 @@
 from typing import Any
 
 from ..context import Context
+from ..formclasses import sample
 from .base import Provider, WithAttributeAccess
 
 
@@ -88,8 +89,6 @@ class Shared(Provider, WithAttributeAccess):
         self.provider = provider
 
     def sample(self, context: Context) -> Any:
-        from ..formclasses import sample
-
         if self not in context.parent.meta:
             context.parent.meta[self] = sample(self.provider, context)
 

@@ -49,33 +49,51 @@ class Context:
         self.seed = self._hasher.digest()
         self.rng = random.Random(self.seed)
 
-    def subcontext(self, class_name: str) -> "Context":
+    def subcontext(self, name: str) -> "Context":
+        """Derive a subcontext.
+
+        A subcontext is derived by updating a copy of the *hasher* with the
+        *name*, setting the *parent* accordingly, and (flat) copying the
+        *meta* dictionary.
+
+        Arguments
+        ---------
+        name: str
+            A name to identify the subcontext. Reusing the same name will give
+            a subcontext with the same random number seed.
+
+        Returns
+        -------
+        Context
+            The derived subcontext.
+        """
         subhasher = self._hasher.copy()
-        subhasher.update(class_name.encode())
+        subhasher.update(name.encode())
         return Context(subhasher, self, dict(self.meta))
 
 
 def seed(value: int):
     """Set the global Plato base seed."""
-    global _type_counts
-    _type_counts = defaultdict(lambda: value)
+    # pylint: disable=global-statement
+    global _TYPE_COUNTS
+    _TYPE_COUNTS = defaultdict(lambda: value)
 
 
 def _int2bytes(value: int) -> bytes:
     return value.to_bytes(value.bit_length() // 8 + 1, "big")
 
 
-def _create_hasher(seed: int) -> blake2b:
+def _create_hasher(hasher_seed: int) -> blake2b:
     hasher = blake2b()
-    hasher.update(_int2bytes(seed))
+    hasher.update(_int2bytes(hasher_seed))
     return hasher
 
 
-_type_counts = defaultdict(lambda: 0)
+_TYPE_COUNTS = defaultdict(lambda: 0)
 
 
 def get_root_context(type_: Type) -> Context:
     """Get a root context for a given type."""
-    seed = _type_counts[type_]
-    _type_counts[type_] += 1
-    return Context(_create_hasher(seed))
+    root_seed = _TYPE_COUNTS[type_]
+    _TYPE_COUNTS[type_] += 1
+    return Context(_create_hasher(root_seed))

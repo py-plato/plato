@@ -89,6 +89,4 @@ class AttributeProvider(Provider, WithAttributeAccess):
         self.attr_name = attr_name
 
     def sample(self, context: Context) -> Any:
-        from ..formclasses import sample
-
-        return getattr(sample(self.parent, context), self.attr_name)
+        return getattr(self.parent.sample(context), self.attr_name)
