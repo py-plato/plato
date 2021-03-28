@@ -27,23 +27,24 @@ class FromFaker:
 
     .. testsetup:: FromFaker
 
+        import plato
         from faker import Faker
         from plato import sample
         from plato.providers.faker import FromFaker
+
+        plato.seed(0)
 
     .. testcode:: FromFaker
 
         fake = FromFaker(Faker(["en-US", "de-DE"]))
 
-        print(sample(fake.first_name()))
         print(sample(fake["en-US"].street_address()))
         print(sample(fake["de-DE"].street_address()))
 
     .. testoutput:: FromFaker
 
-        Thomas
-        9341 Julie Extension Apt. 450
-        Hahnstr. 949
+        413 Perez Cape Apt. 615
+        Schaafallee 41
 
     """
 

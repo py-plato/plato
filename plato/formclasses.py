@@ -61,6 +61,9 @@ def formclass(cls):
         value
         Alicia
 
+    ..
+        # noqa: DAR101 cls
+        # noqa: DAR201 return
     """
 
     post_init_fns = {}

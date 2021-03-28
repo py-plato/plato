@@ -84,3 +84,37 @@ jobs:
         run: poetry run pytest --verbose --cov=plato --cov-report=xml
         if: ${{ matrix.coverage }}
       - uses: codecov/codecov-action@v1
+      
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+      - uses: actions/cache@v2
+        with:
+          path: .venv
+          key: ${{ runner.os }}-py3.9-venv-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-py3.9-venv-
+
+      - uses: ./.github/actions/setup-project
+            
+      - name: Check documentated arguments match function signature
+        run: find plato -name "*.py" | xargs poetry run darglint
+        
+      - name: Build documentation
+        run: poetry run make html
+        working-directory: docs 
+
+      - name: Test examples
+        run: poetry run make doctest
+        working-directory: docs 

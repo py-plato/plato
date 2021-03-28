@@ -119,7 +119,7 @@ it will have the provider instance assigned to the field:
 
 .. testoutput::
 
-    <plato.providers.faker.FakerMethodProvider object at 0x...>
+    <plato.providers.faker._FakerMethodProvider object at 0x...>
     
 To get an instance
 with actual generated values,
@@ -493,7 +493,7 @@ instead of a value.
     
 .. testoutput::
 
-    <plato.providers.faker.FakerMethodProvider object at 0x...>
+    <plato.providers.faker._FakerMethodProvider object at 0x...>
     Randy Garcia
     
 The `.FromFaker` can be passed an existing :py:doc:`Faker <fakerclass>` instance.

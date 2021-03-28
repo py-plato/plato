@@ -30,6 +30,9 @@ class ProviderProtocol(Protocol[T]):
     def sample(self, context: Context) -> T:
         """Return a single value (sample) for the provider.
 
+        ..
+            # noqa: DAR202 return
+
         Arguments
         ---------
         context: Context
@@ -39,7 +42,7 @@ class ProviderProtocol(Protocol[T]):
 
         Returns
         -------
-        Any
+        T
             The sampled value.
         """
         ...
