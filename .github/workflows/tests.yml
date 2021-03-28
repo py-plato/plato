@@ -17,7 +17,7 @@ jobs:
           - name: Check code-formatting
             run: poetry run black --check .
           - name: Check import sorting
-            run: poetry run isort --check-only
+            run: poetry run isort --check-only .
           - name: pylint
             run: poetry run pylint plato
 
@@ -42,8 +42,8 @@ jobs:
 
       - uses: ./.github/actions/setup-project
 
-      - name: Check code-formatting
-        run: poetry run black --check .
+      - name: ${{ matrix.check.name }}
+        run: ${{ matrix.check.run }}
     
   test:
     runs-on: ubuntu-latest
