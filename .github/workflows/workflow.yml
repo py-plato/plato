@@ -157,11 +157,9 @@ jobs:
       - uses: ./.github/actions/setup-project
             
       - name: Publish to PyPI
-        run: |
-          poetry config repositories.testpypi https://test.pypi.org/legacy/
-          poetry publish -r testpypi --build
+        run: poetry publish --build
         env:
-          POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.TESTPYPI_TOKEN }}
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
 
       - name: Set version_name
         id: version_name
