@@ -1,12 +1,11 @@
-Results of doctest builder run on 2021-03-28 18:00:48
+Results of doctest builder run on 2021-03-28 18:06:37
 =====================================================
 
-Document: api/plato
--------------------
-2 items passed all tests:
-   1 tests in formclass
-   3 tests in sample
-4 tests in 2 items.
+Document: getting-started
+-------------------------
+1 items passed all tests:
+   4 tests in getting-started
+4 tests in 1 items.
 4 passed and 0 failed.
 Test passed.
 
@@ -36,11 +35,12 @@ Test passed.
 1 passed and 0 failed.
 Test passed.
 
-Document: getting-started
--------------------------
-1 items passed all tests:
-   4 tests in getting-started
-4 tests in 1 items.
+Document: api/plato
+-------------------
+2 items passed all tests:
+   1 tests in formclass
+   3 tests in sample
+4 tests in 2 items.
 4 passed and 0 failed.
 Test passed.
 
