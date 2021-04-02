@@ -59,13 +59,21 @@ def main():
         help="output file",
     )
     parser.add_argument("directory", type=str, nargs=1, help="directory to process")
+    parser.add_argument("--link-stable", action="store_true")
     args = parser.parse_args()
 
-    manifest = scan_versions(Path(args.directory[0]))
+    path = Path(args.directory[0])
+    manifest = scan_versions(path)
 
     with open(args.output[0], "w") as f:
         json.dump(asdict(manifest), f)
         f.write("\n")
+
+    if args.link_stable and manifest.stable:
+        target_path = path / manifest.stable
+        stable_path = path / "stable"
+        stable_path.unlink()
+        stable_path.symlink_to(target_path.relative_to(path), True)
 
 
 if __name__ == "__main__":
