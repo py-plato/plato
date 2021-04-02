@@ -3,7 +3,18 @@ name = "plato"
 version = "0.1.0"
 description = "A dataclasses-inspired approach to test data."
 authors = ["Jan Gosmann <jan@hyper-world.de>"]
+maintainers = ["Jan Gosmann <jan@hyper-world.de>"]
 license = "MIT"
+readme = "README.rst"
+repository = "https://github.com/py-plato/plato"
+documentation = "https://py-plato.github.io/plato/docs/en/main/"
+keywords = ["testdata", "dataclasses"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
