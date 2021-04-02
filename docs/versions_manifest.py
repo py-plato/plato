@@ -1,0 +1,72 @@
+import argparse
+import json
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import List, Tuple, Union
+
+
+@dataclass
+class VersionManifest:
+    stable: str
+    dev: List[str]
+    released: List[str]
+
+
+def parse_version(version_str: str) -> Union[Tuple[int, int, int]]:
+    parts = [int(x) for x in version_str.split(".", maxsplit=3)]
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts)
+
+
+def format_version(version: Tuple[int, ...]) -> str:
+    return ".".join(str(x) for x in version)
+
+
+def scan_versions(path: Path) -> VersionManifest:
+    dev_versions = []
+    released_versions = []
+
+    for child in path.iterdir():
+        if child.is_dir():
+            try:
+                version = parse_version(child.name)
+                released_versions.append(version)
+            except ValueError:
+                dev_versions.append(child.name)
+
+    released_versions.sort(reverse=True)
+
+    return VersionManifest(
+        stable=format_version(released_versions[0])
+        if len(released_versions) > 0
+        else "",
+        dev=dev_versions,
+        released=[format_version(v) for v in released_versions],
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Create a versions.json manifest for the documentation's version selector."
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default=("versions.json",),
+        nargs=1,
+        help="output file",
+    )
+    parser.add_argument("directory", type=str, nargs=1, help="directory to process")
+    args = parser.parse_args()
+
+    manifest = scan_versions(Path(args.directory[0]))
+
+    with open(args.output[0], "w") as f:
+        json.dump(asdict(manifest), f)
+        f.write("\n")
+
+
+if __name__ == "__main__":
+    main()
