@@ -1,5 +1,23 @@
+
+Contributing
+============
+
+Contributions are welcome in general.
+
+For bugs, feel free to open issues or pull requests.
+
+If you have an ideas, feedback, or feature requests, also open an issue.
+
+Given the early stage of the project, if you want to implement a feature,
+I suggest that you open an issue first to discuss the details and ensure that
+it aligns with the general direction the project is moving into.
+
+Note that it might take me a bit to react as I am working on Plato in my free
+time besides other projects.
+
+
 Vision and Guiding Priniciples
-==============================
+------------------------------
 
 * Generating consistent and realistic test data should be **easy**. The more
   effort it is to produce releastic or consistent test data, the more likely
