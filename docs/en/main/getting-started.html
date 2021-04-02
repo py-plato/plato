@@ -99,8 +99,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user-guide.html">User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vision.html">Vision and Guiding Priniciples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 
             
@@ -184,8 +185,8 @@
 <p>In this example we generate data for a customer
 with a name, email, and billing address.</p>
 <p>First,
-we import the <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> and <a class="reference internal" href="api/plato.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> decorators,
-as well as the <a class="reference internal" href="api/plato.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> function.
+we import the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> and <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> decorators,
+as well as the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> function.
 These are the most important objects in Plato
 and you will import them most of the time
 when working with Plato.
@@ -200,7 +201,7 @@ we also create that.</p>
 <span class="n">fake</span> <span class="o">=</span> <span class="n">FromFaker</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Next, we define our first <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
+<p>Next, we define our first <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
 to generate addresses.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>  <span class="c1"># (1)</span>
 <span class="k">class</span> <span class="nc">Address</span><span class="p">:</span>
@@ -212,7 +213,7 @@ to generate addresses.</p>
 </div>
 <p>Note the similarities to Python’s <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#module-dataclasses" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dataclasses</span></code></a>.</p>
 <ol class="arabic simple">
-<li><p>We add the <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> decorator to mark the class as a formclass.</p></li>
+<li><p>We add the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> decorator to mark the class as a formclass.</p></li>
 <li><p>We define a number of fields with a type annotation.
 We use the <em>fake</em> object to declare that the data should be generated
 following specific Faker patterns.</p></li>
@@ -234,15 +235,15 @@ following specific Faker patterns.</p></li>
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li><p>We can use the <em>Address</em> <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
+<li><p>We can use the <em>Address</em> <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
 to build up hierarchically structured data.
 The <em>billing_address</em> will be filled with a generated address.</p></li>
 <li><p>Standard Python properties can be used to add attributes for derived data.</p></li>
 <li><p>Plato also adds the possibility for fields that have values derived from
 other fields by defaults.</p></li>
 </ol>
-<p>By using the <a class="reference internal" href="api/plato.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> method
-on a <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance,
+<p>By using the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> method
+on a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance,
 a Python <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> instance
 containing the desired test data is generated.
 We can use standard <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> functions,
@@ -264,7 +265,7 @@ and than print it nicely with <a class="reference external" href="https://docs.p
  &#39;last_name&#39;: &#39;Wright&#39;}
 </pre></div>
 </div>
-<p>If you sample the same <a class="reference internal" href="api/plato.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> multiple times,
+<p>If you sample the same <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> multiple times,
 you will get different values each time.
 This allows to generate larger datasets easily.
 However,
@@ -318,13 +319,17 @@ to make tests reproducible.</p>
   </div>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"></span>
+      <span class="fa fa-github" style="float: left;"></span>
       v: main
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
       <dl>
         <dt>Versions</dt>
+      </dl>
+      <dl>
+        <dt>On GitHub</dt>
+        <dd><a href="https://github.com/jgosmann/plato/">Repository</a></dd>
       </dl>
     </div>
   </div>

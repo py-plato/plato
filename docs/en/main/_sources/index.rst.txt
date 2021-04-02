@@ -17,8 +17,9 @@ inspired by dataclasses.
    
    getting-started
    user-guide
-   vision
    api/modules
+   contributing
+   license
 
 
 
