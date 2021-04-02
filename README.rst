@@ -167,7 +167,7 @@ time besides other projects.
 The name
 --------
 
-Plato was a philosopher in ancient greece. He is well known for his *theory of
+The ancient greek philosopher Plato is well known for his *theory of
 forms*. It proposes that, the objects existing in reality are imitations of more
 pure “Ideas” or “Forms” which are the non-physical essence of things.
 
