@@ -75,7 +75,7 @@ def linkcode_resolve(domain, info):
         return None
     filename = info["module"].replace(".", "/")
     ref = version_name_match or "main"
-    return f"https://github.com/jgosmann/plato/blob/{ref}/{filename}.py"
+    return f"https://github.com/py-plato/plato/blob/{ref}/{filename}.py"
 
 
 # -- Options for HTML output -------------------------------------------------
