@@ -22,7 +22,21 @@ copyright = "2021, Jan Gosmann"
 author = "Jan Gosmann"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = "unreleased"
+version = "dev"
+
+import os
+import re
+
+github_ref = os.environ.get("GITHUB_REF", "")
+version_name_match = re.match(r"^refs/heads/(.*)$", github_ref)
+if version_name_match:
+    version_match = re.match(r"^v(\d+\.\d+.\d+)$", version_name_match.group(1))
+    if version_match:
+        version = version_match.group(1)
+        release = version_match.group(1).rsplit(".", maxsplit=1)
+    else:
+        version = version_name_match.group(1)
 
 
 # -- General configuration ---------------------------------------------------
@@ -60,7 +74,12 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 #
 html_theme = "sphinx_rtd_theme"
 
+html_theme_options = {"display_version": False}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+html_css_files = ["css/versioning.css"]
+html_js_files = ["js/versioning.js"]
