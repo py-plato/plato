@@ -114,6 +114,10 @@ jobs:
       - name: Build documentation
         run: poetry run make html
         working-directory: docs 
+        
+      - name: Check links
+        run: poetry run make linkcheck
+        working-directory: docs
 
       - name: Test examples
         run: poetry run make doctest
