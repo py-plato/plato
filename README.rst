@@ -1,7 +1,28 @@
-.. image:: logo/logo_readme.png
+.. figure:: logo/logo_readme.png
   :alt: Plato logo
   :width: 150
   :align: center
+
+.. image:: https://github.com/py-plato/plato/actions/workflows/workflow.yml/badge.svg?branch=main
+  :target: https://github.com/py-plato/plato/actions/workflows/workflow.yml
+  :alt: Build and release pipeline
+  
+
+.. image:: https://codecov.io/gh/py-plato/plato/branch/main/graph/badge.svg?token=UEVIAHO33E
+  :target: https://codecov.io/gh/py-plato/plato
+  :alt: Code coverage  
+
+.. image:: https://img.shields.io/pypi/v/plato
+  :target: https://pypi.org/project/plato
+  :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/pyversions/plato
+  :target: https://pypi.org/project/plato
+  :alt: Python versions
+  
+.. image:: https://img.shields.io/pypi/l/plato
+  :target: https://github.com/py-plato/plato/blob/main/LICENSE
+  :alt: PyPI - License
 
 Plato
 =====
