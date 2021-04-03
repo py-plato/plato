@@ -1,3 +1,8 @@
+.. image:: logo/logo.png
+  :alt: Plato logo
+  :width: 150
+  :align: center
+
 Plato
 =====
 
