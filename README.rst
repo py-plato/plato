@@ -1,4 +1,4 @@
-.. image:: logo/logo.png
+.. image:: logo/logo_readme.png
   :alt: Plato logo
   :width: 150
   :align: center
