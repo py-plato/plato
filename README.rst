@@ -1,6 +1,6 @@
-.. figure:: logo/logo_readme.png
+.. image:: logo/logo.svg
   :alt: Plato logo
-  :width: 150
+  :width: 150px
   :align: center
 
 .. image:: https://github.com/py-plato/plato/actions/workflows/workflow.yml/badge.svg?branch=main
