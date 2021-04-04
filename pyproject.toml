@@ -46,3 +46,10 @@ ensure_newline_before_comments = true
 line_length = 88
 
 [tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version = "0.1.0"
+version_files = [
+    "plato/__version__.py",
+    "pyproject.toml:version"
+]
