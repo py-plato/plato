@@ -14,3 +14,4 @@ API reference
    plato.context
    plato.formclasses
    plato.providers
+   plato.__version__
