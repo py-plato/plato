@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "plato"
-version = "0.1.0"
+version = "0.1.1"
 description = "A dataclasses-inspired approach to test data."
 authors = ["Jan Gosmann <jan@hyper-world.de>"]
 maintainers = ["Jan Gosmann <jan@hyper-world.de>"]
@@ -48,7 +48,7 @@ line_length = 88
 [tool.commitizen]
 name = "cz_conventional_commits"
 tag_format = "v$version"
-version = "0.1.0"
+version = "0.1.1"
 version_files = [
     "plato/__version__.py",
     "pyproject.toml:version"
