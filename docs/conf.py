@@ -31,12 +31,12 @@ import re
 github_ref = os.environ.get("GITHUB_REF", "")
 version_name_match = re.match(r"^refs/heads/(.*)$", github_ref)
 if version_name_match:
-    version_match = re.match(r"^v(\d+\.\d+.\d+)$", version_name_match.group(1))
+    version = version_name_match.group(1)
+else:
+    version_match = re.match(r"^refs/tags/v(\d+\.\d+.\d+)$", github_ref)
     if version_match:
         version = version_match.group(1)
         release = version_match.group(1).rsplit(".", maxsplit=1)
-    else:
-        version = version_name_match.group(1)
 
 
 # -- General configuration ---------------------------------------------------
