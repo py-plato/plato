@@ -6,9 +6,9 @@ const initializeVersioning = (config, versions) => {
     
     const versionLink = tag => `${baseUrl}/en/${tag}`
     
-    const addVersion = tag => {
+    const addVersion = (tag, prefix) => {
         const link = document.createElement("a")
-        link.href = versionLink(tag)
+        link.href = versionLink((prefix || "") + tag)
         let text = tag
         if (tag === versions.stable) {
             text += " (stable)"
@@ -23,7 +23,7 @@ const initializeVersioning = (config, versions) => {
     }
     
     versions.dev.forEach(addVersion); 
-    versions.released.forEach(addVersion); 
+    versions.released.forEach(addVersion, "v"); 
     
     const createLatestLink = () => {
         const link = document.createElement("a")
@@ -34,7 +34,7 @@ const initializeVersioning = (config, versions) => {
         return link
     }
 
-    if (!versions.released.includes(`v${currentVersion}`)) {
+    if (!versions.released.includes(currentVersion)) {
         versionBanner.classList.add("dev")
         versionBanner.appendChild(document.createTextNode(
             "You are viewing the documentation for the development version. "
@@ -42,7 +42,7 @@ const initializeVersioning = (config, versions) => {
         if (versions.stable) {
             versionBanner.appendChild(createLatestLink())
         }
-    } else if (`v${currentVersion}` !== versions.stable) {
+    } else if (currentVersion !== versions.stable) {
         versionBanner.classList.add("outdated")
         versionBanner.appendChild(document.createTextNode(
             "You are viewing the documentation for an old version. "
