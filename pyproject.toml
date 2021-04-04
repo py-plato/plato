@@ -31,6 +31,7 @@ isort = "^5.8.0"
 pytest-cov = "^2.11.1"
 pylint = "^2.7.2"
 darglint = "^1.7.0"
+commitizen = "^2.17.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -43,3 +44,5 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 line_length = 88
+
+[tool.commitizen]
