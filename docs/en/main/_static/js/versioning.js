@@ -34,7 +34,7 @@ const initializeVersioning = (config, versions) => {
         return link
     }
 
-    if (!versions.released.includes(currentVersion)) {
+    if (!versions.released.includes(`v${currentVersion}`)) {
         versionBanner.classList.add("dev")
         versionBanner.appendChild(document.createTextNode(
             "You are viewing the documentation for the development version. "
@@ -42,7 +42,7 @@ const initializeVersioning = (config, versions) => {
         if (versions.stable) {
             versionBanner.appendChild(createLatestLink())
         }
-    } else if (currentVersion !== versions.stable) {
+    } else if (`v${currentVersion}` !== versions.stable) {
         versionBanner.classList.add("outdated")
         versionBanner.appendChild(document.createTextNode(
             "You are viewing the documentation for an old version. "
