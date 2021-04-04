@@ -18,6 +18,7 @@ inspired by dataclasses.
    getting-started
    user-guide
    api/modules
+   Changelog <https://github.com/py-plato/plato/blob/main/CHANGELOG.md>
    contributing
    license
 
