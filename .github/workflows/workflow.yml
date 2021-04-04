@@ -115,7 +115,7 @@ jobs:
         run: find plato -name "*.py" | xargs poetry run darglint
         
       - name: Build documentation
-        run: poetry run make html
+        run: poetry run make html SPHINXOPTS="-W"
         working-directory: docs 
         
       - name: Check links
