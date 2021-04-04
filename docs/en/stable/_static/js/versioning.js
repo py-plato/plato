@@ -27,7 +27,7 @@ const initializeVersioning = (config, versions) => {
     
     const createLatestLink = () => {
         const link = document.createElement("a")
-        link.href = versionLink(versions.stable)
+        link.href = versionLink("stable")
         link.appendChild(document.createTextNode(
             `Go to the latest stable version (${versions.stable}).`
         ))
