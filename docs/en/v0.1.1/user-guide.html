@@ -1,0 +1,812 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>User Guide &mdash; Plato unreleased documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/logo.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/versioning.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/js/versioning.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API reference" href="api/modules.html" />
+    <link rel="prev" title="Getting Started" href="getting-started.html" />
+<script>
+    initializeVersioningFromManifest({
+        currentVersion: "dev",
+        baseUrl: "https://py-plato.github.io/plato/docs",
+    })
+</script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#defining-formclasses">Defining formclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mandatory-fields">Mandatory fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constant-fields">Constant fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generated-fields">Generated fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#class-variables">Class variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#derived-fields">Derived fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-formclasses">Using formclasses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#seeding-and-reproducibility">Seeding and reproducibility</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#providers">Providers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sharing-values">Sharing values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementing-custom-providers">Implementing custom providers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#recipes-and-typical-use-cases">Recipes and typical use cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#convert-to-json">Convert to JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-plato-as-builder">Use Plato as builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#high-level-states-variants">High-level states / variants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fill-database-with-sqlalchemy">Fill database with SQLAlchemy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API reference</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/py-plato/plato/blob/main/CHANGELOG.md">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Plato</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+<div class="version-banner"></div>
+
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>User Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/user-guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="defining-formclasses">
+<h2>Defining formclasses<a class="headerlink" href="#defining-formclasses" title="Permalink to this headline">¶</a></h2>
+<p>In Plato you define
+the hierarchical structure of the test data to generate
+with classes using the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> decorator.
+This is similar to Python’s <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#module-dataclasses" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dataclasses</span></code></a>.
+In fact,
+a class decorated with <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
+will be converted to a special <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a>.</p>
+<p>Like in <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#module-dataclasses" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dataclasses</span></code></a>,
+you define fields on the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>
+using type annotations
+and optionally default values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">mandatory_field</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">constant_field</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>
+    <span class="n">generated_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following,
+declaring different types of fields is discussed.</p>
+<div class="section" id="mandatory-fields">
+<h3>Mandatory fields<a class="headerlink" href="#mandatory-fields" title="Permalink to this headline">¶</a></h3>
+<p>For mandatory fields a value must be provided
+when instantiating the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.
+To make a field mandatory,
+skip the default value assignment
+in the field declaration.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">mandatory_field</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="n">MyFormclass</span><span class="p">(</span><span class="n">mandatory_field</span><span class="o">=</span><span class="s2">&quot;the value&quot;</span><span class="p">)</span>  <span class="c1"># OK</span>
+
+<span class="n">MyFormclass</span><span class="p">()</span>  <span class="c1"># but this raises</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+    ...
+TypeError: __init__() missing 1 required positional argument: &#39;mandatory_field&#39;
+</pre></div>
+</div>
+</div>
+<div class="section" id="constant-fields">
+<h3>Constant fields<a class="headerlink" href="#constant-fields" title="Permalink to this headline">¶</a></h3>
+<p>By assigning a constant default value in a field declaration,
+the field becomes optional on instantiation.
+It will be initialized with the provided value
+if not given,
+but can be overwritten
+with a different value.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">constant_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;default value&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">()</span><span class="o">.</span><span class="n">constant_field</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">(</span><span class="n">constant_field</span><span class="o">=</span><span class="s2">&quot;different value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">constant_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>default value
+different value
+</pre></div>
+</div>
+</div>
+<div class="section" id="generated-fields">
+<h3>Generated fields<a class="headerlink" href="#generated-fields" title="Permalink to this headline">¶</a></h3>
+<p>Mandatory and constant fields do not really add anything
+over standard <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#module-dataclasses" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dataclasses</span></code></a>.
+The benefit of Plato is
+that it allows you to also assign <a class="reference internal" href="api/plato.providers.html#module-plato.providers" title="plato.providers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">providers</span></code></a>
+to have data generated dynamically.</p>
+<p>In the following example we will use the <a class="reference internal" href="api/plato.providers.html#plato.providers.faker.FromFaker" title="plato.providers.faker.FromFaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFaker</span></code></a> provider
+that exposes the API of the <a class="reference external" href="https://faker.readthedocs.io/en/latest/">Faker</a>
+library for generating basic values.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plato.providers.faker</span> <span class="kn">import</span> <span class="n">FromFaker</span>
+
+<span class="n">fake</span> <span class="o">=</span> <span class="n">FromFaker</span><span class="p">()</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">generated_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>When instantiating this formclass,
+it will have the provider instance assigned to the field:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">()</span><span class="o">.</span><span class="n">generated_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;plato.providers.faker._FakerMethodProvider object at 0x...&gt;
+</pre></div>
+</div>
+<p>To get an instance
+with actual generated values,
+use the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> function:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">generated_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Alicia
+</pre></div>
+</div>
+<p>It is possible to overwrite providers
+with either constant values
+or different providers:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">(</span>
+    <span class="n">generated_field</span><span class="o">=</span><span class="s2">&quot;fixed value&quot;</span>
+<span class="p">))</span><span class="o">.</span><span class="n">generated_field</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">(</span>
+    <span class="n">generated_field</span><span class="o">=</span><span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">()</span>
+<span class="p">))</span><span class="o">.</span><span class="n">generated_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>fixed value
+16000
+</pre></div>
+</div>
+<p>The power of Plato is
+that a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance happens to be also a provider.
+Thus,
+a hierachical structure can be declared
+and the data is generated accordingly.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">ComposedClass</span><span class="p">:</span>
+    <span class="n">field0</span><span class="p">:</span> <span class="n">MyFormclass</span> <span class="o">=</span> <span class="n">MyFormclass</span><span class="p">()</span>
+    <span class="n">field1</span><span class="p">:</span> <span class="n">MyFormclass</span> <span class="o">=</span> <span class="n">MyFormclass</span><span class="p">()</span>
+    <span class="n">field_with_postcode</span><span class="p">:</span> <span class="n">MyFormclass</span> <span class="o">=</span> <span class="n">MyFormclass</span><span class="p">(</span>
+        <span class="n">generated_field</span><span class="o">=</span><span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">()</span>
+    <span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">ComposedClass</span><span class="p">())))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;field0&#39;: {&#39;generated_field&#39;: &#39;Joseph&#39;},
+ &#39;field1&#39;: {&#39;generated_field&#39;: &#39;Sean&#39;},
+ &#39;field_with_postcode&#39;: {&#39;generated_field&#39;: &#39;83827&#39;}}
+</pre></div>
+</div>
+</div>
+<div class="section" id="class-variables">
+<h3>Class variables<a class="headerlink" href="#class-variables" title="Permalink to this headline">¶</a></h3>
+<p>If no type annotation is given
+or the :py:class`typing.ClassVar` annotation is used,
+no field is generated
+and a regular class variable is declared.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">class_var0</span> <span class="o">=</span> <span class="s2">&quot;value0&quot;</span>
+    <span class="n">class_var1</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;value1&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="o">.</span><span class="n">class_var0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="o">.</span><span class="n">class_var1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>value0
+value1
+</pre></div>
+</div>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">MyFormclass</span><span class="p">(</span><span class="n">class_var0</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+    ...
+TypeError: __init__() got an unexpected keyword argument &#39;class_var0&#39;
+</pre></div>
+</div>
+<p>Class variables are not sampled by the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a> function.</p>
+</div>
+<div class="section" id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
+<p>Methods can be added to a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;world&quot;</span>
+
+    <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+
+<span class="n">MyFormclass</span><span class="p">()</span><span class="o">.</span><span class="n">greet</span><span class="p">()</span>
+<span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">greet</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Hello, world!
+Hello, world!
+</pre></div>
+</div>
+</div>
+<div class="section" id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
+<p>Properties can be added to a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;world&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">greeting</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">()</span><span class="o">.</span><span class="n">greeting</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Hello, world!
+</pre></div>
+</div>
+<p>Note that properties are considered fields,
+in particular when converting the resulting <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a>
+to other types.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span><span class="p">,</span> <span class="n">fields</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Is greeting a field?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;greeting&quot;</span> <span class="ow">in</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">)}</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Is greeting part of dict conversion?&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;greeting&quot;</span> <span class="ow">in</span> <span class="n">asdict</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Is greeting a field? False
+Is greeting part of dict conversion? False
+</pre></div>
+</div>
+</div>
+<div class="section" id="derived-fields">
+<h3>Derived fields<a class="headerlink" href="#derived-fields" title="Permalink to this headline">¶</a></h3>
+<p>It can be useful to derive the value of certain fields
+from other fields.
+This can be achieved
+by declaring a method with the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> decorator.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+
+    <span class="nd">@derivedfield</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">@example.net&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">User</span><span class="p">())))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;email&#39;: &#39;Denise.Wright@example.net&#39;,
+ &#39;first_name&#39;: &#39;Denise&#39;,
+ &#39;last_name&#39;: &#39;Wright&#39;}
+</pre></div>
+</div>
+<p>A derived field can be overwritten
+with a different value or provider
+when needed.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s2">&quot;my-alias@mailz.org&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;email&#39;: &#39;my-alias@mailz.org&#39;, &#39;first_name&#39;: &#39;Melissa&#39;, &#39;last_name&#39;: &#39;Harris&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-formclasses">
+<h2>Using formclasses<a class="headerlink" href="#using-formclasses" title="Permalink to this headline">¶</a></h2>
+<p>When instantiating a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>,
+you obtain a “template” for test data.
+This allows to change
+specific values or providers
+as required by the respective test case.
+To generate the actual test data,
+call the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample()</span></code></a>
+on such a “template”.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span> <span class="o">=</span> <span class="n">FromFaker</span><span class="p">()</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+    <span class="n">bio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@derivedfield</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">@example.net&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Plato&quot;</span><span class="p">,</span> <span class="n">bio</span><span class="o">=</span><span class="n">fake</span><span class="o">.</span><span class="n">sentence</span><span class="p">())</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">template</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;bio&#39;: &#39;Leg forget run book rise stage house.&#39;,
+ &#39;email&#39;: &#39;Plato.Wright@example.net&#39;,
+ &#39;first_name&#39;: &#39;Plato&#39;,
+ &#39;last_name&#39;: &#39;Wright&#39;}
+</pre></div>
+</div>
+<p>Sampling the same template multiple times will give different values;
+making it easy to generate multiple test data instances.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">template</span><span class="p">)))</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">template</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;bio&#39;: &#39;Station bag whole mission west amount son car.&#39;,
+ &#39;email&#39;: &#39;Plato.Harris@example.net&#39;,
+ &#39;first_name&#39;: &#39;Plato&#39;,
+ &#39;last_name&#39;: &#39;Harris&#39;}
+{&#39;bio&#39;: &#39;Though each energy catch pick ever strong bed.&#39;,
+ &#39;email&#39;: &#39;Plato.Hernandez@example.net&#39;,
+ &#39;first_name&#39;: &#39;Plato&#39;,
+ &#39;last_name&#39;: &#39;Hernandez&#39;}
+</pre></div>
+</div>
+<div class="section" id="seeding-and-reproducibility">
+<h3>Seeding and reproducibility<a class="headerlink" href="#seeding-and-reproducibility" title="Permalink to this headline">¶</a></h3>
+<p>Test failures should be reproducible.
+This also requires that the test data used can be reproduced.
+Plato ensures this
+by always using the same default random number generator seed.</p>
+<p>If desired,
+the seed can be set manually.
+You might want to configure your test framework
+to do this before every test
+so that the set of executed tests does not affect the test data.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">first_name</span><span class="p">)</span>
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">first_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Billy
+Billy
+</pre></div>
+</div>
+<p>To make things even more reproducible,
+Plato is designed in a way
+that leaves generated values unaffected
+if fields are added to or removed from a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Bullock
+Bullock
+</pre></div>
+</div>
+<p>However,
+generated values will change if the field name changes.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">first_name</span><span class="p">)</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+
+<span class="n">plato</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">last_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Williams
+Bullock
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="providers">
+<h2>Providers<a class="headerlink" href="#providers" title="Permalink to this headline">¶</a></h2>
+<p>While a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> defines the hierarchical structure of test data,
+a <a class="reference internal" href="api/plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> defines how individual values are generated.</p>
+<p>Currently,
+Plato does not really have any providers of its own,
+but provides the <a class="reference internal" href="api/plato.providers.html#plato.providers.faker.FromFaker" title="plato.providers.faker.FromFaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFaker</span></code></a> class to create providers
+based on the <a class="reference external" href="https://faker.readthedocs.io/en/latest/">Faker</a> library.
+Its delegates all method calls to Faker,
+but returns a <a class="reference internal" href="api/plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> usuable with Plato,
+instead of a value.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span> <span class="o">=</span> <span class="n">FromFaker</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;plato.providers.faker._FakerMethodProvider object at 0x...&gt;
+Randy Garcia
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="api/plato.providers.html#plato.providers.faker.FromFaker" title="plato.providers.faker.FromFaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFaker</span></code></a> can be passed an existing <a class="reference external" href="https://faker.readthedocs.io/en/latest/fakerclass.html" title="(in Faker v5.0.1)"><span class="xref std std-doc">Faker</span></a> instance.
+This allows for example to make use of Faker’s localization feature.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="n">fake</span> <span class="o">=</span> <span class="n">FromFaker</span><span class="p">(</span><span class="n">Faker</span><span class="p">([</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="s2">&quot;de-DE&quot;</span><span class="p">]))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;English name:&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="p">(</span><span class="n">fake</span><span class="p">[</span><span class="s2">&quot;en-US&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;German name:&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="p">(</span><span class="n">fake</span><span class="p">[</span><span class="s2">&quot;de-DE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">()))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>English name: Danielle Fletcher
+German name: Prof. Helmut Hentschel
+</pre></div>
+</div>
+<div class="section" id="sharing-values">
+<h3>Sharing values<a class="headerlink" href="#sharing-values" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it is desirable
+to share the value generated with a provider
+across multiple fields of a <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.
+This can be done with the special <a class="reference internal" href="api/plato.providers.html#plato.providers.common.Shared" title="plato.providers.common.Shared"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shared</span></code></a> provider decorator.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">Address</span><span class="p">:</span>
+    <span class="n">street</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">street_address</span><span class="p">()</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">()</span>
+    <span class="n">postal_code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">()</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">Order</span><span class="p">:</span>
+    <span class="n">billing_address</span><span class="p">:</span> <span class="n">Address</span> <span class="o">=</span> <span class="n">Shared</span><span class="p">(</span><span class="n">Address</span><span class="p">())</span>
+    <span class="n">shipping_address</span><span class="p">:</span> <span class="n">Address</span> <span class="o">=</span> <span class="n">billing_address</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">Order</span><span class="p">())))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;billing_address&#39;: {&#39;city&#39;: &#39;North Reginaburgh&#39;,
+                     &#39;postal_code&#39;: &#39;03314&#39;,
+                     &#39;street&#39;: &#39;310 Edwin Shore Suite 986&#39;},
+ &#39;shipping_address&#39;: {&#39;city&#39;: &#39;North Reginaburgh&#39;,
+                      &#39;postal_code&#39;: &#39;03314&#39;,
+                      &#39;street&#39;: &#39;310 Edwin Shore Suite 986&#39;}}
+</pre></div>
+</div>
+<p>This is in particular useful to include fields
+of a child class
+within the parent class.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">:</span>
+    <span class="n">mailing_address</span><span class="p">:</span> <span class="n">Address</span> <span class="o">=</span> <span class="n">Shared</span><span class="p">(</span><span class="n">Address</span><span class="p">())</span>
+    <span class="n">postal_code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">mailing_address</span><span class="o">.</span><span class="n">postal_code</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">Customer</span><span class="p">())))</span>
+</pre></div>
+</div>
+<p>Note that both <em>postal_codes</em> in the output are the same:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;mailing_address&#39;: {&#39;city&#39;: &#39;New Shane&#39;,
+                     &#39;postal_code&#39;: &#39;20059&#39;,
+                     &#39;street&#39;: &#39;81646 Rebecca Rapids Suite 486&#39;},
+ &#39;postal_code&#39;: &#39;20059&#39;}
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementing-custom-providers">
+<h3>Implementing custom providers<a class="headerlink" href="#implementing-custom-providers" title="Permalink to this headline">¶</a></h3>
+<p>Custom providers can be implemented
+with the abstract <a class="reference internal" href="api/plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> base class.
+It only requires
+to provide an implementation
+of the <a class="reference internal" href="api/plato.providers.html#plato.providers.base.Provider.sample" title="plato.providers.base.Provider.sample"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Provider.sample()</span></code></a> method.
+That method gets passed a <a class="reference internal" href="api/plato.context.html#plato.context.Context" title="plato.context.Context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context</span></code></a>
+which provides a <a class="reference internal" href="api/plato.context.html#plato.context.Context.seed" title="plato.context.Context.seed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context.seed</span></code></a>
+that should be used as random number generator seed
+to ensure reproducability.
+Alternatively,
+a seeded <a class="reference external" href="https://docs.python.org/3/library/random.html#random.Random" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Random</span></code></a> instance is provided as <a class="reference internal" href="api/plato.context.html#plato.context.Context.rng" title="plato.context.Context.rng"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Context.rng</span></code></a>.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">plato.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">plato.providers</span> <span class="kn">import</span> <span class="n">Provider</span>
+
+<span class="k">class</span> <span class="nc">RandomFloatProvider</span><span class="p">(</span><span class="n">Provider</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">number</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">RandomFloatProvider</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0.9355289927699928
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="recipes-and-typical-use-cases">
+<h2>Recipes and typical use cases<a class="headerlink" href="#recipes-and-typical-use-cases" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="convert-to-json">
+<h3>Convert to JSON<a class="headerlink" href="#convert-to-json" title="Permalink to this headline">¶</a></h3>
+<p>To convert generated test data to JSON,
+use <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.asdict" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asdict()</span></code></a> to convert the object into a dictionary first,
+then use the <a class="reference external" href="https://docs.python.org/3/library/json.html#module-json" title="(in Python v3.9)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code></a> module to convert that dictionary to JSON.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">MyFormclass</span><span class="p">:</span>
+    <span class="n">string_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+    <span class="n">number_value</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">MyFormclass</span><span class="p">())</span>
+<span class="n">json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;string_value&quot;: &quot;Edwin Ford&quot;, &quot;number_value&quot;: 42}
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-plato-as-builder">
+<h3>Use Plato as builder<a class="headerlink" href="#use-plato-as-builder" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="high-level-states-variants">
+<h3>High-level states / variants<a class="headerlink" href="#high-level-states-variants" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="fill-database-with-sqlalchemy">
+<h3>Fill database with SQLAlchemy<a class="headerlink" href="#fill-database-with-sqlalchemy" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="api/modules.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting-started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jan Gosmann.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-github" style="float: left;"></span>
+      v: dev
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+      </dl>
+      <dl>
+        <dt>On GitHub</dt>
+        <dd><a href="https://github.com/py-plato/plato/">Repository</a></dd>
+      </dl>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
