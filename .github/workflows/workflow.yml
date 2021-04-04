@@ -22,9 +22,12 @@ jobs:
             run: poetry run pylint plato
           - name: Check static typing
             run: poetry run mypy plato tests
+          - name: Check commit message format
+            run: '[[ $(git rev-list --count origin/main..HEAD) == 0 ]] || poetry run cz check --rev-range origin/main..HEAD'
 
     steps:
       - uses: actions/checkout@v2
+      - run: git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
       - name: Set up Python
         uses: actions/setup-python@v2
