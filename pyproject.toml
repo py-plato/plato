@@ -7,7 +7,7 @@ maintainers = ["Jan Gosmann <jan@hyper-world.de>"]
 license = "MIT"
 readme = "README.rst"
 repository = "https://github.com/py-plato/plato"
-documentation = "https://py-plato.github.io/plato/docs/en/main/"
+documentation = "https://py-plato.github.io/plato/docs/en/stable/"
 keywords = ["testdata", "dataclasses"]
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
