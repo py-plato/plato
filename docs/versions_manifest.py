@@ -1,5 +1,6 @@
 import argparse
 import json
+import shutil
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import List, Tuple, Union
@@ -13,7 +14,10 @@ class VersionManifest:
 
 
 def parse_version(version_str: str) -> Union[Tuple[int, int, int]]:
-    parts = [int(x) for x in version_str.split(".", maxsplit=3)]
+    if not version_str.startswith("v"):
+        raise ValueError("version string must start with 'v'")
+
+    parts = [int(x) for x in version_str[1:].split(".", maxsplit=3)]
     while len(parts) < 3:
         parts.append(0)
     return tuple(parts)
@@ -28,7 +32,7 @@ def scan_versions(path: Path) -> VersionManifest:
     released_versions = []
 
     for child in path.iterdir():
-        if child.is_dir():
+        if child.is_dir() and child.name != "stable":
             try:
                 version = parse_version(child.name)
                 released_versions.append(version)
@@ -70,9 +74,10 @@ def main():
         f.write("\n")
 
     if args.link_stable and manifest.stable:
-        target_path = path / manifest.stable
+        target_path = path / f"v{manifest.stable}"
         stable_path = path / "stable"
-        stable_path.unlink()
+        if stable_path.exists():
+            shutil.rmtree(stable_path)
         stable_path.symlink_to(target_path.relative_to(path), True)
 
 
