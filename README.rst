@@ -1,4 +1,4 @@
-.. image:: logo/logo.svg
+.. image:: https://raw.githubusercontent.com/py-plato/plato/main/logo/logo.svg
   :alt: Plato logo
   :width: 150px
   :align: center
