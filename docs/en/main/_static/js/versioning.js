@@ -23,7 +23,7 @@ const initializeVersioning = (config, versions) => {
     }
     
     versions.dev.forEach(addVersion); 
-    versions.released.forEach(addVersion, "v"); 
+    versions.released.forEach(tag => addVersion(tag, "v")); 
     
     const createLatestLink = () => {
         const link = document.createElement("a")
