@@ -193,12 +193,12 @@ jobs:
         
       - name: Extract changelog
         id: changelog
-        run: echo ::set-output name=changelog::"$(sed -n '/## ${{ steps.version_name.outputs.version_name }} /,/^## v/{/^## v/!p;}' CHANGELOG.md)"
+        run: sed -n '/## ${{ steps.version_name.outputs.version_name }} /,/^## v/{/^## v/!p;}' CHANGELOG.md > release-body.md
           
       - name: Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
-          body: ${{ steps.changelog.outputs.changelog }}
+          body_path: release-body.md
           tag_name: ${{ steps.version_name.outputs.version_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
