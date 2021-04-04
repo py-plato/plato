@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>plato.formclasses module &mdash; Plato unreleased documentation</title>
+  <title>plato.formclasses module &mdash; Plato 0.1 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
     <link rel="prev" title="plato.context module" href="plato.context.html" />
 <script>
     initializeVersioningFromManifest({
-        currentVersion: "dev",
+        currentVersion: "0.1.0",
         baseUrl: "https://py-plato.github.io/plato/docs",
     })
 </script>
@@ -191,7 +191,7 @@ instances of such form classes.</p></li>
 </ul>
 <dl class="py function">
 <dt id="plato.formclasses.formclass">
-<code class="sig-prename descclassname"><span class="pre">&#64;</span></code><code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">formclass</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.formclass" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">&#64;</span></code><code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">formclass</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.formclass" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class decorator to process a class definition as formclass.</p>
 <p>The <em>formclass</em> decorator is one of the main parts of the Plato API. A class
 annotated with it will be processed to enable Plato’s feature. In
@@ -222,7 +222,7 @@ Alicia
 
 <dl class="py function">
 <dt id="plato.formclasses.derivedfield">
-<code class="sig-prename descclassname"><span class="pre">&#64;</span></code><code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">derivedfield</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.derivedfield" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">&#64;</span></code><code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">derivedfield</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.derivedfield" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method decorator to derive a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> field from other fields.</p>
 <p>When instantiating a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>, the decorated method will be run after
 initializing all normal fields. The returned value will be used to add
@@ -231,7 +231,7 @@ a field with the method’s name to the <a class="reference internal" href="#pla
 of declaration.</p>
 <dl class="py attribute">
 <dt id="plato.formclasses.fn">
-<code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">fn</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.fn" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">fn</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorated method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -244,7 +244,7 @@ of declaration.</p>
 
 <dl class="py function">
 <dt id="plato.formclasses.sample">
-<code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a dataclass with concrete values from a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance.</p>
 <p>Recursively processes a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance and returns an analogous
 <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> where all <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> have been replaced
@@ -354,7 +354,7 @@ Alicia
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-github" style="float: left;"></span>
-      v: dev
+      v: 0.1.0
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

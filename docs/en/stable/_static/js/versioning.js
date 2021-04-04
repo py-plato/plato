@@ -6,9 +6,9 @@ const initializeVersioning = (config, versions) => {
     
     const versionLink = tag => `${baseUrl}/en/${tag}`
     
-    const addVersion = tag => {
+    const addVersion = (tag, prefix) => {
         const link = document.createElement("a")
-        link.href = versionLink(tag)
+        link.href = versionLink((prefix || "") + tag)
         let text = tag
         if (tag === versions.stable) {
             text += " (stable)"
@@ -23,7 +23,7 @@ const initializeVersioning = (config, versions) => {
     }
     
     versions.dev.forEach(addVersion); 
-    versions.released.forEach(addVersion); 
+    versions.released.forEach(tag => addVersion(tag, "v")); 
     
     const createLatestLink = () => {
         const link = document.createElement("a")

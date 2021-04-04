@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>plato.context module &mdash; Plato unreleased documentation</title>
+  <title>plato.context module &mdash; Plato 0.1 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
     <link rel="prev" title="API reference" href="modules.html" />
 <script>
     initializeVersioningFromManifest({
-        currentVersion: "dev",
+        currentVersion: "0.1.0",
         baseUrl: "https://py-plato.github.io/plato/docs",
     })
 </script>
@@ -184,7 +184,7 @@
 <p>Context management</p>
 <dl class="py class">
 <dt id="plato.context.Context">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">Context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hasher</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#plato.context.Hasher" title="plato.context.Hasher"><span class="pre">plato.context.Hasher</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">Context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hasher</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#plato.context.Hasher" title="plato.context.Hasher"><span class="pre">plato.context.Hasher</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Context used in sampling from <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> instances.</p>
 <dl class="field-list simple">
@@ -201,7 +201,7 @@ might be modified.</p></li>
 </dl>
 <dl class="py attribute">
 <dt id="plato.context.Context.parent">
-<code class="sig-name descname"><span class="pre">parent</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.parent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">parent</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>The parent context or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> if this is a root context.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -212,7 +212,7 @@ might be modified.</p></li>
 
 <dl class="py attribute">
 <dt id="plato.context.Context.meta">
-<code class="sig-name descname"><span class="pre">meta</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.meta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">meta</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.meta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary that can be used by providers to store additional information
 across invocations of <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider.sample" title="plato.providers.base.Provider.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider.sample()</span></code></a>. Use the <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> instance
 or concrete class as key to avoid key collisions with other providers.</p>
@@ -225,7 +225,7 @@ or concrete class as key to avoid key collisions with other providers.</p>
 
 <dl class="py attribute">
 <dt id="plato.context.Context.seed">
-<code class="sig-name descname"><span class="pre">seed</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.seed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">seed</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.seed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Seed to use for the generation of random numbers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -236,7 +236,7 @@ or concrete class as key to avoid key collisions with other providers.</p>
 
 <dl class="py attribute">
 <dt id="plato.context.Context.rng">
-<code class="sig-name descname"><span class="pre">rng</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.rng" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">rng</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.rng" title="Permalink to this definition">¶</a></dt>
 <dd><p>A seeded random number generator that may be used for the generation of
 random numbers.</p>
 <dl class="field-list simple">
@@ -248,7 +248,7 @@ random numbers.</p>
 
 <dl class="py method">
 <dt id="plato.context.Context.subcontext">
-<code class="sig-name descname"><span class="pre">subcontext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.subcontext" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">subcontext</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Context.subcontext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Derive a subcontext.</p>
 <p>A subcontext is derived by updating a copy of the <em>hasher</em> with the
 <em>name</em>, setting the <em>parent</em> accordingly, and (flat) copying the
@@ -271,24 +271,24 @@ a subcontext with the same random number seed.</p>
 
 <dl class="py class">
 <dt id="plato.context.Hasher">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">Hasher</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">Hasher</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
 <p>Protocol of classes to perform incremental hashing.</p>
 <dl class="py method">
 <dt id="plato.context.Hasher.copy">
-<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Hasher" title="plato.context.Hasher"><span class="pre">plato.context.Hasher</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.copy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Hasher" title="plato.context.Hasher"><span class="pre">plato.context.Hasher</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a copy of the current hasher state.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="plato.context.Hasher.digest">
-<code class="sig-name descname"><span class="pre">digest</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.digest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">digest</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.digest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the current hash.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="plato.context.Hasher.update">
-<code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.9)"><span class="pre">bytes</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.Hasher.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the hash with <em>data</em>.</p>
 </dd></dl>
 
@@ -296,13 +296,13 @@ a subcontext with the same random number seed.</p>
 
 <dl class="py function">
 <dt id="plato.context.get_root_context">
-<code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">get_root_context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.get_root_context" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">get_root_context</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Type</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.get_root_context" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a root context for a given type.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="plato.context.seed">
-<code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">seed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.seed" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">plato.context.</span></code><code class="sig-name descname"><span class="pre">seed</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/v0.1.0/plato/context.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.context.seed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the global Plato base seed.</p>
 </dd></dl>
 
@@ -346,7 +346,7 @@ a subcontext with the same random number seed.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-github" style="float: left;"></span>
-      v: dev
+      v: 0.1.0
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
