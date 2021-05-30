@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import InitVar, asdict, dataclass
 from decimal import Decimal
 from pprint import pprint
 
@@ -86,14 +86,13 @@ class SelectProvider(Provider):
 
 @formclass
 class Price:
-    locale: str
-    # locale: Hidden[str]
+    locale: InitVar[str]
     base_price: Decimal = fake.pydecimal(1, 2)
 
     @derivedfield
-    def vat_percent(self) -> Decimal:
+    def vat_percent(self, locale) -> Decimal:
         return SelectProvider(
-            self.locale,
+            locale,
             {
                 "en-CA": fake.random_element([Decimal(5), Decimal(13)]),
                 "de-DE": fake.random_element([Decimal(7), Decimal(19)]),
