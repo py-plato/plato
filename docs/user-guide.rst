@@ -184,7 +184,7 @@ Class variables
 ^^^^^^^^^^^^^^^
 
 If no type annotation is given
-or the :py:class`typing.ClassVar` annotation is used,
+or the :py:class:`typing.ClassVar` annotation is used,
 no field is generated
 and a regular class variable is declared.
 
