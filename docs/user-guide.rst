@@ -328,6 +328,47 @@ when needed.
 .. testoutput::
 
     {'email': 'my-alias@mailz.org', 'first_name': 'Melissa', 'last_name': 'Harris'}
+    
+
+Init-only variables
+^^^^^^^^^^^^^^^^^^^
+
+Sometimes you need values to derive specific field values,
+but you do not want to store the original value as field in the formclass.
+Use the `InitVar` type for this.
+A field with this type can be provided as usual
+when constructing the formclass;
+you even must provide it
+if it has no default value.
+While,
+it is not included in the fields of your formclass,
+you can use it for your derived fields.
+Just add an argument with the same name to yout `.derivedfield` method.
+
+.. testcode::
+
+    from datetime import date, timedelta
+    from plato import InitVar
+
+    @formclass
+    class User:
+        first_name: str = fake.first_name()
+        last_name: str = fake.last_name()
+        email_domain: InitVar[str] = "example.net"
+
+        @derivedfield
+        def email(self, email_domain) -> str:
+            return f"{self.first_name}.{self.last_name}@{email_domain}"
+            
+    pprint(asdict(sample(User(email_domain="mailz.org"))))
+
+.. testoutput::
+
+    {'email': 'Denise.Wright@mailz.org',
+     'first_name': 'Denise',
+     'last_name': 'Wright'}
+     
+Note that `email_domain` is missing from the output.
 
 
 Using formclasses

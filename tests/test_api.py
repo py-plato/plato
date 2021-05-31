@@ -1,11 +1,11 @@
 import typing
-from dataclasses import InitVar, dataclass, fields
+from dataclasses import dataclass, fields
 
 import pytest
 
 import plato
 from plato import Provider, Shared, formclass, sample
-from plato.formclasses import derivedfield
+from plato.formclasses import InitVar, derivedfield
 from plato.providers.base import ProviderProtocol, WithAttributeAccess
 
 

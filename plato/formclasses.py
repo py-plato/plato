@@ -44,6 +44,11 @@ def formclass(cls):
     and :func:`~dataclasses.field` assignments, you can assign a `.Provider`
     that is used to generate values when using `.sample`.
 
+    Like `~dataclasses`, a *formclass* supports the `InitVar` type. A field
+    with such a type will not be available on the instance, but will be passed
+    as argument to the `__post_init__` method (in order of declaration) and
+    `.derivedfield` methods (as keyword argument by name).
+
     Example
     -------
 
@@ -132,7 +137,9 @@ class _DerivedField:
 
     When instantiating a `.formclass`, the decorated method will be run after
     initializing all normal fields. The returned value will be used to add
-    a field with the method's name to the `.formclass` instance.
+    a field with the method's name to the `.formclass` instance. If you have
+    `InitVar` fields in your `.formclass`, you get access to this by declaring
+    additional arguments for the `.derivedfield` using the same name.
 
     When multiple methods are decorated with *derivedfield*, they run in order
     of declaration.
