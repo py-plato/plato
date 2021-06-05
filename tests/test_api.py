@@ -5,7 +5,7 @@ import pytest
 
 import plato
 from plato import Provider, Shared, formclass, sample
-from plato.formclasses import derivedfield
+from plato.formclasses import InitVar, derivedfield
 from plato.providers.base import ProviderProtocol, WithAttributeAccess
 
 
@@ -457,3 +457,23 @@ def test_derivedfield_initialization_order():
             return self.derived3 + self.derived2
 
     assert sample(TestData()).derived4 == 8
+
+
+def test_initvar_not_included_in_fields():
+    @formclass
+    class TestData:
+        field: InitVar[str]
+
+    assert "field" not in fields(sample(TestData(field="data")))
+
+
+def test_initvar_is_passed_to_derivedfields():
+    @formclass
+    class TestData:
+        base_value: InitVar[int]
+
+        @derivedfield
+        def plus_one(self, base_value) -> int:
+            return base_value + 1
+
+    assert sample(TestData(base_value=1)).plus_one == 2

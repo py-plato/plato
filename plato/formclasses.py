@@ -15,14 +15,18 @@ Plato's core API consists out of
     plato.seed(0)
 """
 
-from dataclasses import fields, is_dataclass, make_dataclass
-from typing import Any, Callable, ClassVar, Dict, Mapping
+import inspect
+import sys
+from dataclasses import InitVar, fields, is_dataclass, make_dataclass
+from typing import Any, Callable, ClassVar, Dict, MutableMapping
 from weakref import WeakKeyDictionary
 
 from .context import get_root_context
+from .internal.weak_id_dict import WeakIdDict
 from .providers.base import Provider, ProviderProtocol
 
-_post_init_registry: Mapping[
+_init_var_registry: WeakIdDict[Dict[str, Any]] = WeakIdDict()
+_post_init_registry: MutableMapping[
     object, Dict[str, Callable[[object], Any]]
 ] = WeakKeyDictionary()
 
@@ -39,6 +43,11 @@ def formclass(cls):
     a *formclass* using type annotations. In addition to normal default values
     and :func:`~dataclasses.field` assignments, you can assign a `.Provider`
     that is used to generate values when using `.sample`.
+
+    Like `~dataclasses`, a *formclass* supports the `InitVar` type. A field
+    with such a type will not be available on the instance, but will be passed
+    as argument to the `__post_init__` method (in order of declaration) and
+    `.derivedfield` methods (as keyword argument by name).
 
     Example
     -------
@@ -85,6 +94,18 @@ def formclass(cls):
             value = None
         namespace[name] = value
 
+    orig_post_init = namespace.get("__post_init__", None)
+    init_var_names = [
+        name for name, type_ in annotations.items() if _is_init_var(type_)
+    ]
+
+    def __post_init__(self, *args):
+        _init_var_registry[self] = dict(zip(init_var_names, args))
+        if orig_post_init:
+            orig_post_init(self, *args)
+
+    namespace["__post_init__"] = __post_init__
+
     instance_fields = [
         (name, type_, namespace.pop(name)) if name in namespace else (name, type_)
         for name, type_ in instance_fields
@@ -104,12 +125,21 @@ def _type_origin_matches(annotation, type_):
     )
 
 
+def _is_init_var(type_):
+    is_py37_init_var = (
+        sys.version_info[:2] <= (3, 7) and type_.__class__ is InitVar.__class__
+    )
+    return is_py37_init_var or isinstance(type_, InitVar)
+
+
 class _DerivedField:
     """Method decorator to derive a `.formclass` field from other fields.
 
     When instantiating a `.formclass`, the decorated method will be run after
     initializing all normal fields. The returned value will be used to add
-    a field with the method's name to the `.formclass` instance.
+    a field with the method's name to the `.formclass` instance. If you have
+    `InitVar` fields in your `.formclass`, you get access to this by declaring
+    additional arguments for the `.derivedfield` using the same name.
 
     When multiple methods are decorated with *derivedfield*, they run in order
     of declaration.
@@ -226,19 +256,27 @@ def sample(form, context=None):
     if not is_dataclass(form):
         return form
 
-    field_values = {
-        field_def.name: sample(
-            getattr(form, field_def.name), context.subcontext(field_def.name)
-        )
-        for field_def in fields(form)
-    }
-    instance = form.__class__(**field_values)
+    init_args = dict(_init_var_registry[form])
+    init_args.update(
+        {
+            field_def.name: sample(
+                getattr(form, field_def.name), context.subcontext(field_def.name)
+            )
+            for field_def in fields(form)
+        }
+    )
+    instance = form.__class__(**init_args)
 
     if form.__class__ in _post_init_registry:
         for name, fn in _post_init_registry[form.__class__].items():
             value = getattr(instance, name, None)
+            parameter_iter = iter(inspect.signature(fn).parameters)
+            next(parameter_iter)  # skip self
             if value is None:
-                value = fn(instance)
+                init_var_args = {
+                    name: _init_var_registry[form][name] for name in parameter_iter
+                }
+                value = fn(instance, **init_var_args)
             setattr(instance, name, sample(value, context.subcontext(name)))
 
     return instance
