@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#methods">Methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#properties">Properties</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#derived-fields">Derived fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#init-only-variables">Init-only variables</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#using-formclasses">Using formclasses</a><ul>
@@ -348,7 +349,7 @@ and the data is generated accordingly.</p>
 <div class="section" id="class-variables">
 <h3>Class variables<a class="headerlink" href="#class-variables" title="Permalink to this headline">¶</a></h3>
 <p>If no type annotation is given
-or the :py:class`typing.ClassVar` annotation is used,
+or the <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.ClassVar</span></code> annotation is used,
 no field is generated
 and a regular class variable is declared.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
@@ -465,6 +466,42 @@ when needed.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;email&#39;: &#39;my-alias@mailz.org&#39;, &#39;first_name&#39;: &#39;Melissa&#39;, &#39;last_name&#39;: &#39;Harris&#39;}
 </pre></div>
 </div>
+</div>
+<div class="section" id="init-only-variables">
+<h3>Init-only variables<a class="headerlink" href="#init-only-variables" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you need values to derive specific field values,
+but you do not want to store the original value as field in the formclass.
+Use the <code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> type for this.
+A field with this type can be provided as usual
+when constructing the formclass;
+you even must provide it
+if it has no default value.
+While,
+it is not included in the fields of your formclass,
+you can use it for your derived fields.
+Just add an argument with the same name to yout <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> method.</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">plato</span> <span class="kn">import</span> <span class="n">InitVar</span>
+
+<span class="nd">@formclass</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
+    <span class="n">email_domain</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;example.net&quot;</span>
+
+    <span class="nd">@derivedfield</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email_domain</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">email_domain</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="n">pprint</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">sample</span><span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="n">email_domain</span><span class="o">=</span><span class="s2">&quot;mailz.org&quot;</span><span class="p">))))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;email&#39;: &#39;Denise.Wright@mailz.org&#39;,
+ &#39;first_name&#39;: &#39;Denise&#39;,
+ &#39;last_name&#39;: &#39;Wright&#39;}
+</pre></div>
+</div>
+<p>Note that <code class="xref py py-obj docutils literal notranslate"><span class="pre">email_domain</span></code> is missing from the output.</p>
 </div>
 </div>
 <div class="section" id="using-formclasses">
@@ -610,7 +647,7 @@ instead of a value.</p>
 Randy Garcia
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="api/plato.providers.html#plato.providers.faker.FromFaker" title="plato.providers.faker.FromFaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFaker</span></code></a> can be passed an existing <a class="reference external" href="https://faker.readthedocs.io/en/latest/fakerclass.html" title="(in Faker v8.4.0)"><span class="xref std std-doc">Faker</span></a> instance.
+<p>The <a class="reference internal" href="api/plato.providers.html#plato.providers.faker.FromFaker" title="plato.providers.faker.FromFaker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFaker</span></code></a> can be passed an existing <a class="reference external" href="https://faker.readthedocs.io/en/latest/fakerclass.html" title="(in Faker v8.5.1)"><span class="xref std std-doc">Faker</span></a> instance.
 This allows for example to make use of Faker’s localization feature.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
 

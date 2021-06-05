@@ -203,6 +203,10 @@ for the <a class="reference internal" href="#plato.formclasses.derivedfield" tit
 a <em>formclass</em> using type annotations. In addition to normal default values
 and <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.field" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">field()</span></code></a> assignments, you can assign a <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a>
 that is used to generate values when using <a class="reference internal" href="#plato.formclasses.sample" title="plato.formclasses.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sample</span></code></a>.</p>
+<p>Like <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#module-dataclasses" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataclasses</span></code></a>, a <em>formclass</em> supports the <code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> type. A field
+with such a type will not be available on the instance, but will be passed
+as argument to the <code class="xref py py-obj docutils literal notranslate"><span class="pre">__post_init__</span></code> method (in order of declaration) and
+<a class="reference internal" href="#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> methods (as keyword argument by name).</p>
 <p class="rubric">Example</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span> <span class="o">=</span> <span class="n">plato</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">faker</span><span class="o">.</span><span class="n">FromFaker</span><span class="p">()</span>
 
@@ -228,7 +232,9 @@ Alicia
 <dd><p>Method decorator to derive a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> field from other fields.</p>
 <p>When instantiating a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>, the decorated method will be run after
 initializing all normal fields. The returned value will be used to add
-a field with the method’s name to the <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance.</p>
+a field with the method’s name to the <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance. If you have
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> fields in your <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>, you get access to this by declaring
+additional arguments for the <a class="reference internal" href="#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> using the same name.</p>
 <p>When multiple methods are decorated with <em>derivedfield</em>, they run in order
 of declaration.</p>
 <dl class="py attribute">
