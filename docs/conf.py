@@ -36,7 +36,7 @@ else:
     version_match = re.match(r"^refs/tags/v(\d+\.\d+.\d+)$", github_ref)
     if version_match:
         version = version_match.group(1)
-        release = version_match.group(1).rsplit(".", maxsplit=1)
+        release = version_match.group(1).rsplit(".", maxsplit=1)[0]
 
 
 # -- General configuration ---------------------------------------------------
