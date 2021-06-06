@@ -224,6 +224,14 @@ as argument to the <code class="xref py py-obj docutils literal notranslate"><sp
 Alicia
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cls</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)"><em>type</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)">type</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -235,15 +243,15 @@ initializing all normal fields. The returned value will be used to add
 a field with the method’s name to the <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance. You get
 access to your fields (including <code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> fields) by declaring additional
 arguments for the <a class="reference internal" href="#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> using the same name as the field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>DerivedFieldT</em>) – </p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt id="plato.formclasses.fn">
 <code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">fn</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorated method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>func</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
@@ -265,11 +273,11 @@ invocation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>form</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Usually a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance to be processed. But can also be a
+<li><p><strong>form</strong> (<em>T</em>) – Usually a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance to be processed. But can also be a
 <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> instance which will forward the call to the provider’s
 <a class="reference internal" href="plato.providers.html#plato.providers.base.Provider.sample" title="plato.providers.base.Provider.sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider.sample</span></code></a> method. Any other type of object will be returned
 unchanged.</p></li>
-<li><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>Context</em></a><em>, </em><em>optional</em>) – Context of the sample operation, for example, the random number seed to
+<li><p><strong>context</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>plato.context.Context</em></a><em>]</em>) – Context of the sample operation, for example, the random number seed to
 use. Usually this argument has not to be set manually and will be
 initialized automatically.</p></li>
 </ul>
@@ -282,7 +290,7 @@ value will be returned and for all other objects, the object itself
 is returned.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)">object</a></p>
+<dd class="field-odd"><p>T</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

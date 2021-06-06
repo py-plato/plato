@@ -196,24 +196,24 @@
 providers. Otherwise, you probably will not need them.</p>
 <dl class="py class">
 <dt id="plato.providers.base.AttributeProvider">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.base.</span></code><code class="sig-name descname"><span class="pre">AttributeProvider</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#plato.providers.base.ProviderProtocol" title="plato.providers.base.ProviderProtocol"><span class="pre">plato.providers.base.ProviderProtocol</span></a><span class="p"><span class="pre">[</span></span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.AttributeProvider" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <a class="reference internal" href="#plato.providers.base.ProviderProtocol" title="plato.providers.base.ProviderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.ProviderProtocol</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>]</p>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.base.</span></code><code class="sig-name descname"><span class="pre">AttributeProvider</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_name</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.AttributeProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.Provider</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>], <a class="reference internal" href="#plato.providers.base.WithAttributeAccess" title="plato.providers.base.WithAttributeAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.WithAttributeAccess</span></code></a></p>
 <p>Provider of an attribute of the samples of another provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>parent</strong> (<a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><em>Provider</em></a>) – Parent provider to sample.</p></li>
-<li><p><strong>attr_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the attribute to provide from the sampled object.</p></li>
+<li><p><strong>parent</strong> – Parent provider to sample.</p></li>
+<li><p><strong>attr_name</strong> – Name of the attribute to provide from the sampled object.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="plato.providers.base.AttributeProvider.sample">
-<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.AttributeProvider.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.AttributeProvider.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single value (sample) for the provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>Context</em></a>) – The sampling context. Use the random number generator from the
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>plato.context.Context</em></a>) – The sampling context. Use the random number generator from the
 context or initialize your random number generator from the seed
 provided in the context to ensure reproducibality.</p>
 </dd>
@@ -231,15 +231,15 @@ provided in the context to ensure reproducibality.</p>
 <dl class="py class">
 <dt id="plato.providers.base.Provider">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.base.</span></code><code class="sig-name descname"><span class="pre">Provider</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.Provider" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <a class="reference internal" href="#plato.providers.base.ProviderProtocol" title="plato.providers.base.ProviderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.ProviderProtocol</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>], <a class="reference internal" href="#plato.providers.base.ProviderProtocol" title="plato.providers.base.ProviderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.ProviderProtocol</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>]</p>
 <p>Provider interface.</p>
 <dl class="py method">
 <dt id="plato.providers.base.Provider.sample">
-<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">T</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.Provider.sample" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.Provider.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single value (sample) for the provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>Context</em></a>) – The sampling context. Use the random number generator from the
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>plato.context.Context</em></a>) – The sampling context. Use the random number generator from the
 context or initialize your random number generator from the seed
 provided in the context to ensure reproducibality.</p>
 </dd>
@@ -263,11 +263,11 @@ provided in the context to ensure reproducibality.</p>
 provider use the <a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Provider</span></code></a> abstract base class.</p>
 <dl class="py method">
 <dt id="plato.providers.base.ProviderProtocol.sample">
-<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">T</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.ProviderProtocol.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.ProviderProtocol.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single value (sample) for the provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>Context</em></a>) – The sampling context. Use the random number generator from the
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>plato.context.Context</em></a>) – The sampling context. Use the random number generator from the
 context or initialize your random number generator from the seed
 provided in the context to ensure reproducibality.</p>
 </dd>
@@ -285,7 +285,7 @@ provided in the context to ensure reproducibality.</p>
 <dl class="py class">
 <dt id="plato.providers.base.WithAttributeAccess">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.base.</span></code><code class="sig-name descname"><span class="pre">WithAttributeAccess</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/base.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.base.WithAttributeAccess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>]</p>
 <p>Provider mixin to provide transparent access to attributes.</p>
 <p>Attributes existing on the implementing class and special members starting and
 ending with a double-underscore (<code class="docutils literal notranslate"><span class="pre">__</span></code>) are excluded.</p>
@@ -315,8 +315,8 @@ ending with a double-underscore (<code class="docutils literal notranslate"><spa
 <p>Commonly used providers.</p>
 <dl class="py class">
 <dt id="plato.providers.common.Shared">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.common.</span></code><code class="sig-name descname"><span class="pre">Shared</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><span class="pre">plato.providers.base.Provider</span></a></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/common.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.common.Shared" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <a class="reference internal" href="#plato.providers.base.ProviderProtocol" title="plato.providers.base.ProviderProtocol"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.ProviderProtocol</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.base.T</span></code>]</p>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">plato.providers.common.</span></code><code class="sig-name descname"><span class="pre">Shared</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/common.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.common.Shared" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.Provider</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.common.T</span></code>], <a class="reference internal" href="#plato.providers.base.WithAttributeAccess" title="plato.providers.base.WithAttributeAccess"><code class="xref py py-class docutils literal notranslate"><span class="pre">plato.providers.base.WithAttributeAccess</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">plato.providers.common.T</span></code>]</p>
 <p>Share the sampled value of a Provider across multiple fields.</p>
 <p>Try to avoid sharing values across more than a single <a class="reference internal" href="plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> because
 the semantics of <em>Shared</em> are a bit unintuitive in other cases. But for
@@ -326,7 +326,7 @@ if the value is first sampled in a child instance, it will not be reused
 in the parent instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>provider</strong> (<a class="reference internal" href="#plato.providers.base.Provider" title="plato.providers.base.Provider"><em>Provider</em></a>) – Provider to share sampled values of.</p>
+<dd class="field-odd"><p><strong>provider</strong> – Provider to share sampled values of.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -379,11 +379,11 @@ in the parent instance.</p>
 </div>
 <dl class="py method">
 <dt id="plato.providers.common.Shared.sample">
-<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><span class="pre">plato.context.Context</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/common.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.common.Shared.sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sample</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/providers/common.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.providers.common.Shared.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a single value (sample) for the provider.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>Context</em></a>) – The sampling context. Use the random number generator from the
+<dd class="field-odd"><p><strong>context</strong> (<a class="reference internal" href="plato.context.html#plato.context.Context" title="plato.context.Context"><em>plato.context.Context</em></a>) – The sampling context. Use the random number generator from the
 context or initialize your random number generator from the seed
 provided in the context to ensure reproducibality.</p>
 </dd>
@@ -413,7 +413,7 @@ library with Plato.</p>
 in a <a class="reference internal" href="plato.formclasses.html#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>faker</strong> (<em>Faker</em><em>, </em><em>optional</em>) – Faker instance used to generate values. If not given a new instance
+<dd class="field-odd"><p><strong>faker</strong> – Faker instance used to generate values. If not given a new instance
 using the default will be created.</p>
 </dd>
 </dl>
