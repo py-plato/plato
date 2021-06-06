@@ -387,8 +387,8 @@ def test_derivedfield():
         field: str = "default"
 
         @derivedfield
-        def derived(self) -> str:
-            return self.field
+        def derived(self, field) -> str:
+            return field
 
     field_map = {f.name: f.type for f in fields(TestData)}
     assert field_map["derived"] == str
@@ -441,20 +441,20 @@ def test_derivedfield_initialization_order():
             return 1
 
         @derivedfield
-        def derived1(self) -> int:
-            return self.derived0 + 1
+        def derived1(self, derived0) -> int:
+            return derived0 + 1
 
         @derivedfield
-        def derived2(self) -> int:
-            return self.derived1 + self.derived0
+        def derived2(self, derived0, derived1) -> int:
+            return derived1 + derived0
 
         @derivedfield
-        def derived3(self) -> int:
-            return self.derived2 + self.derived1
+        def derived3(self, derived1, derived2) -> int:
+            return derived2 + derived1
 
         @derivedfield
-        def derived4(self) -> int:
-            return self.derived3 + self.derived2
+        def derived4(self, derived2, derived3) -> int:
+            return derived3 + derived2
 
     assert sample(TestData()).derived4 == 8
 
