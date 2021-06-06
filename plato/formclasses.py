@@ -316,6 +316,9 @@ def sample(form: T, context: Context = None) -> T:
             if value is not None:
                 continue
 
+            if name not in _post_init_registry[form.__class__]:
+                continue
+
             fn = _post_init_registry[form.__class__][name]
             init_var_args = {
                 name: get_post_init_arg(name) for name in dependency_graph[name]

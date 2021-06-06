@@ -60,6 +60,14 @@ def test_default_field():
     assert sample(TestData("different value")).field == "different value"
 
 
+def test_optional_field():
+    @formclass
+    class TestData:
+        optional: typing.Optional[str] = None
+
+    assert sample(TestData()).optional is None
+
+
 def test_generated_field():
     @formclass
     class TestData:
