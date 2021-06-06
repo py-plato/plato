@@ -22,6 +22,7 @@ from typing import Any, Callable, ClassVar, Dict, MutableMapping
 from weakref import WeakKeyDictionary
 
 from .context import get_root_context
+from .internal.graph import toposort
 from .internal.weak_id_dict import WeakIdDict
 from .providers.base import Provider, ProviderProtocol
 
@@ -140,9 +141,6 @@ class _DerivedField:
     a field with the method's name to the `.formclass` instance. You get
     access to your fields (including `InitVar` fields) by declaring additional
     arguments for the `.derivedfield` using the same name as the field.
-
-    When multiple methods are decorated with *derivedfield*, they run in order
-    of declaration.
 
     Attributes
     ----------
@@ -267,21 +265,34 @@ def sample(form, context=None):
     )
     instance = form.__class__(**init_args)
 
-    def get_post_init_arg(name):
-        if name in _init_var_registry[form]:
-            return _init_var_registry[form][name]
-        return getattr(instance, name)
-
     if form.__class__ in _post_init_registry:
+
+        def get_post_init_arg(name):
+            if name in _init_var_registry[form]:
+                return _init_var_registry[form][name]
+            return getattr(instance, name)
+
+        dependency_graph = {name: frozenset() for name in init_args}
         for name, fn in _post_init_registry[form.__class__].items():
-            value = getattr(instance, name, None)
             parameter_iter = iter(inspect.signature(fn).parameters)
             next(parameter_iter)  # skip self
-            if value is None:
-                init_var_args = {
-                    name: get_post_init_arg(name) for name in parameter_iter
-                }
-                value = fn(instance, **init_var_args)
+            dependency_graph[name] = frozenset(parameter_iter)
+
+        eval_order = toposort(dependency_graph)
+
+        for name in eval_order:
+            if name in _init_var_registry[form]:
+                continue
+
+            value = getattr(instance, name, None)
+            if value is not None:
+                continue
+
+            fn = _post_init_registry[form.__class__][name]
+            init_var_args = {
+                name: get_post_init_arg(name) for name in dependency_graph[name]
+            }
+            value = fn(instance, **init_var_args)
             setattr(instance, name, sample(value, context.subcontext(name)))
 
     return instance
