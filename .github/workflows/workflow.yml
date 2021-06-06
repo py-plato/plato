@@ -19,7 +19,7 @@ jobs:
           - name: Check import sorting
             run: poetry run isort --check-only .
           - name: pylint
-            run: poetry run pylint plato
+            run: poetry run pylint plato tests
           - name: Check static typing
             run: poetry run mypy plato tests
           - name: Check commit message format

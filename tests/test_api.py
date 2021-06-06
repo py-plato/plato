@@ -1,3 +1,5 @@
+"""Tests of the Plato's public core API."""
+
 import typing
 from dataclasses import dataclass, fields
 
@@ -32,7 +34,7 @@ class SequenceProvider(Provider, WithAttributeAccess):
         self.values = values
         self._n_values_sampled = 0
 
-    def sample(self, context):
+    def sample(self, context):  # pylint: disable=unused-argument
         retval = self.values[self._n_values_sampled % len(self.values)]
         self._n_values_sampled += 1
         return retval
@@ -89,16 +91,16 @@ def test_ignores_class_variables():
 def test_keeps_namespace():
     @formclass
     class TestData:
-        def foo(self):
-            return "foo"
+        def some_method(self):
+            return "some_method"
 
         @property
-        def bar(self):
-            return "bar"
+        def some_property(self):
+            return "some_property"
 
     data = sample(TestData())
-    assert data.foo() == "foo"
-    assert data.bar == "bar"
+    assert data.some_method() == "some_method"
+    assert data.some_property == "some_property"
 
 
 def test_nested_formclass():
@@ -167,7 +169,7 @@ def test_context_seeds_are_stable_against_field_removal():
     field1_seed = sample(TestData()).field1
 
     @formclass
-    class TestData:
+    class TestData:  # pylint: disable=function-redefined
         field1: bytes = SeedProvider()
 
     plato.seed(42)
@@ -244,7 +246,7 @@ def test_shared_values():
     assert data.field1 == 1
 
     @formclass
-    class TestData:
+    class TestData:  # pylint: disable=function-redefined
         field0: int = Shared(CountingProvider())
         field1: int = field0
 
