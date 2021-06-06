@@ -21,7 +21,7 @@ jobs:
           - name: pylint
             run: poetry run pylint plato tests
           - name: Check static typing
-            run: poetry run mypy plato tests
+            run: poetry run mypy
           - name: Check commit message format
             run: '[[ $(git rev-list --count origin/main..HEAD) == 0 ]] || poetry run cz check --rev-range origin/main..HEAD'
 

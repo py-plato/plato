@@ -11,7 +11,7 @@ providers. Otherwise, you probably will not need them.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, TypeVar
+from typing import Generic, TypeVar
 
 from typing_extensions import Protocol
 
@@ -35,7 +35,7 @@ class ProviderProtocol(Protocol[T]):
 
         Arguments
         ---------
-        context: Context
+        context
             The sampling context. Use the random number generator from the
             context or initialize your random number generator from the seed
             provided in the context to ensure reproducibality.
@@ -48,7 +48,7 @@ class ProviderProtocol(Protocol[T]):
         ...
 
 
-class Provider(ABC, ProviderProtocol[T]):
+class Provider(ABC, Generic[T], ProviderProtocol[T]):
     """Provider interface."""
 
     @abstractmethod
@@ -56,7 +56,7 @@ class Provider(ABC, ProviderProtocol[T]):
         ...
 
 
-class WithAttributeAccess:
+class WithAttributeAccess(Generic[T]):
     """Provider mixin to provide transparent access to attributes.
 
     Attributes existing on the implementing class and special members starting and
@@ -85,20 +85,22 @@ class WithAttributeAccess:
         foo
     """
 
-    def __getattr__(self: ProviderProtocol[T], field_name: str):
+    def __getattr__(
+        self: ProviderProtocol[T], field_name: str
+    ) -> "AttributeProvider[T]":
         if field_name.startswith("__") and field_name.endswith("__"):
             raise AttributeError
         return AttributeProvider(self, field_name)
 
 
-class AttributeProvider(Provider, WithAttributeAccess):
+class AttributeProvider(Provider[T], WithAttributeAccess):
     """Provider of an attribute of the samples of another provider.
 
     Arguments
     ---------
-    parent: Provider
+    parent
         Parent provider to sample.
-    attr_name: str
+    attr_name
         Name of the attribute to provide from the sampled object.
     """
 
@@ -106,5 +108,5 @@ class AttributeProvider(Provider, WithAttributeAccess):
         self.parent = parent
         self.attr_name = attr_name
 
-    def sample(self, context: Context) -> Any:
+    def sample(self, context: Context) -> T:
         return getattr(self.parent.sample(context), self.attr_name)

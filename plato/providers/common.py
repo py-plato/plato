@@ -1,13 +1,15 @@
 """Commonly used providers."""
 
-from typing import Any
+from typing import TypeVar
 
 from ..context import Context
 from ..formclasses import sample
 from .base import Provider, WithAttributeAccess
 
+T = TypeVar("T")
 
-class Shared(Provider, WithAttributeAccess):
+
+class Shared(Provider[T], WithAttributeAccess[T]):
     """Share the sampled value of a Provider across multiple fields.
 
     Try to avoid sharing values across more than a single `.formclass` because
@@ -19,7 +21,7 @@ class Shared(Provider, WithAttributeAccess):
 
     Arguments
     ---------
-    provider: Provider
+    provider
         Provider to share sampled values of.
 
     Examples
@@ -85,10 +87,10 @@ class Shared(Provider, WithAttributeAccess):
 
     """
 
-    def __init__(self, provider: Provider):
+    def __init__(self, provider: Provider[T]):
         self.provider = provider
 
-    def sample(self, context: Context) -> Any:
+    def sample(self, context: Context) -> T:
         if context.parent is None:
             raise ValueError("Subcontext with set parent required.")
 
