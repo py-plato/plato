@@ -137,9 +137,9 @@ class _DerivedField:
 
     When instantiating a `.formclass`, the decorated method will be run after
     initializing all normal fields. The returned value will be used to add
-    a field with the method's name to the `.formclass` instance. If you have
-    `InitVar` fields in your `.formclass`, you get access to this by declaring
-    additional arguments for the `.derivedfield` using the same name.
+    a field with the method's name to the `.formclass` instance. You get
+    access to your fields (including `InitVar` fields) by declaring additional
+    arguments for the `.derivedfield` using the same name as the field.
 
     When multiple methods are decorated with *derivedfield*, they run in order
     of declaration.
@@ -267,6 +267,11 @@ def sample(form, context=None):
     )
     instance = form.__class__(**init_args)
 
+    def get_post_init_arg(name):
+        if name in _init_var_registry[form]:
+            return _init_var_registry[form][name]
+        return getattr(instance, name)
+
     if form.__class__ in _post_init_registry:
         for name, fn in _post_init_registry[form.__class__].items():
             value = getattr(instance, name, None)
@@ -274,7 +279,7 @@ def sample(form, context=None):
             next(parameter_iter)  # skip self
             if value is None:
                 init_var_args = {
-                    name: _init_var_registry[form][name] for name in parameter_iter
+                    name: get_post_init_arg(name) for name in parameter_iter
                 }
                 value = fn(instance, **init_var_args)
             setattr(instance, name, sample(value, context.subcontext(name)))

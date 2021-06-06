@@ -107,8 +107,8 @@ class OrderLine:
     product: Product = Product()
 
     @derivedfield
-    def price(self) -> Price:
-        return Price(self.locale)
+    def price(self, locale) -> Price:
+        return Price(locale)
 
 
 class OrderNumber(Provider):
@@ -139,19 +139,19 @@ class Order:
     order_number: str = OrderNumber()  # globally unique
 
     @derivedfield
-    def billing_address(self) -> Address:
+    def billing_address(self, locale) -> Address:
         return {
             "de-DE": GermanAddress(),
             "en-CA": CanadianAddress(),
-        }[self.locale]
+        }[locale]
 
     @derivedfield
-    def shipping_address(self) -> Address:
-        return self.billing_address
+    def shipping_address(self, billing_address) -> Address:
+        return billing_address
 
     @derivedfield
-    def order_lines(self) -> str:
-        return ListProvider(1, 5, OrderLine(self.locale))
+    def order_lines(self, locale) -> str:
+        return ListProvider(1, 5, OrderLine(locale))
 
 
 if __name__ == "__main__":
