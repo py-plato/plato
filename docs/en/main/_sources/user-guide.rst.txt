@@ -294,6 +294,7 @@ It can be useful to derive the value of certain fields
 from other fields.
 This can be achieved
 by declaring a method with the `.derivedfield` decorator.
+Add the dependent fields as arguments to the method.
 
 .. testcode::
 
@@ -303,8 +304,8 @@ by declaring a method with the `.derivedfield` decorator.
         last_name: str = fake.last_name()
 
         @derivedfield
-        def email(self) -> str:
-            return f"{self.first_name}.{self.last_name}@example.net"
+        def email(self, first_name, last_name) -> str:
+            return f"{first_name}.{last_name}@example.net"
 
     from dataclasses import asdict
     from pprint import pprint

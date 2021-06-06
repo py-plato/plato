@@ -232,11 +232,9 @@ Alicia
 <dd><p>Method decorator to derive a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> field from other fields.</p>
 <p>When instantiating a <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>, the decorated method will be run after
 initializing all normal fields. The returned value will be used to add
-a field with the method’s name to the <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance. If you have
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> fields in your <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a>, you get access to this by declaring
-additional arguments for the <a class="reference internal" href="#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> using the same name.</p>
-<p>When multiple methods are decorated with <em>derivedfield</em>, they run in order
-of declaration.</p>
+a field with the method’s name to the <a class="reference internal" href="#plato.formclasses.formclass" title="plato.formclasses.formclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formclass</span></code></a> instance. You get
+access to your fields (including <code class="xref py py-obj docutils literal notranslate"><span class="pre">InitVar</span></code> fields) by declaring additional
+arguments for the <a class="reference internal" href="#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> using the same name as the field.</p>
 <dl class="py attribute">
 <dt id="plato.formclasses.fn">
 <code class="sig-prename descclassname"><span class="pre">plato.formclasses.</span></code><code class="sig-name descname"><span class="pre">fn</span></code><a class="reference external" href="https://github.com/py-plato/plato/blob/main/plato/formclasses.py"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#plato.formclasses.fn" title="Permalink to this definition">¶</a></dt>

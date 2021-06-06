@@ -436,15 +436,16 @@ Is greeting part of dict conversion? False
 <p>It can be useful to derive the value of certain fields
 from other fields.
 This can be achieved
-by declaring a method with the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> decorator.</p>
+by declaring a method with the <a class="reference internal" href="api/plato.formclasses.html#plato.formclasses.derivedfield" title="plato.formclasses.derivedfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">derivedfield</span></code></a> decorator.
+Add the dependent fields as arguments to the method.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@formclass</span>
 <span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
     <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name</span><span class="p">()</span>
     <span class="n">last_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fake</span><span class="o">.</span><span class="n">last_name</span><span class="p">()</span>
 
     <span class="nd">@derivedfield</span>
-    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">@example.net&quot;</span>
+    <span class="k">def</span> <span class="nf">email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">first_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">last_name</span><span class="si">}</span><span class="s2">@example.net&quot;</span>
 
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
