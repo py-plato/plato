@@ -22,12 +22,12 @@ class Customer:
     billing_address: Address = Address()
 
     @property
-    def fullname(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+    def fullname(self, first_name: str, last_name: str) -> str:
+        return f"{first_name} {last_name}"
 
     @derivedfield
-    def email(self) -> str:
-        return f"{self.first_name}.{self.last_name}@example.com"
+    def email(self, first_name: str, last_name: str) -> str:
+        return f"{first_name}.{last_name}@example.com"
 
 
 if __name__ == "__main__":
