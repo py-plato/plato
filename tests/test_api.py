@@ -439,6 +439,10 @@ def test_derivedfield_initialization_order():
     @formclass
     class TestData:
         @derivedfield
+        def derived2(self, derived0, derived1) -> int:
+            return derived1 + derived0
+
+        @derivedfield
         def derived0(self) -> int:
             return 1
 
@@ -447,16 +451,12 @@ def test_derivedfield_initialization_order():
             return derived0 + 1
 
         @derivedfield
-        def derived2(self, derived0, derived1) -> int:
-            return derived1 + derived0
+        def derived4(self, derived2, derived3) -> int:
+            return derived3 + derived2
 
         @derivedfield
         def derived3(self, derived1, derived2) -> int:
             return derived2 + derived1
-
-        @derivedfield
-        def derived4(self, derived2, derived3) -> int:
-            return derived3 + derived2
 
     assert sample(TestData()).derived4 == 8
 
