@@ -3,7 +3,7 @@
 import random
 from collections import defaultdict
 from hashlib import blake2b
-from typing import Any, Dict, Type
+from typing import Any, Dict, Optional, Type
 
 from typing_extensions import Protocol
 
@@ -15,7 +15,7 @@ class Hasher(Protocol):
         """Create a copy of the current hasher state."""
         ...
 
-    def update(self, data: bytes):
+    def update(self, data: bytes) -> None:
         """Update the hash with *data*."""
         ...
 
@@ -29,29 +29,31 @@ class Context:
 
     Arguments
     ---------
-    hasher: Hasher
+    hasher
         Hasher used to derive the random number seed and to derive hashers for
         subcontexts.
-    parent: Context, optional
+    parent
         The parent context if any.
-    meta: dict, optional
+    meta
         A dictionary that can be used by `.Provider` instances to store
         additional information in the context. Be aware that the passed instance
         might be modified.
+    """
 
-    Attributes
-    ----------
+    parent: Optional["Context"]
+    """The parent context or `None` if this is a root context."""
 
-    parent: Context
-        The parent context or `None` if this is a root context.
     meta: dict
-        Dictionary that can be used by providers to store additional information
+    """ Dictionary that can be used by providers to store additional information
         across invocations of `.Provider.sample()`. Use the `.Provider` instance
         or concrete class as key to avoid key collisions with other providers.
+    """
+
     seed: bytes
-        Seed to use for the generation of random numbers.
+    """Seed to use for the generation of random numbers."""
+
     rng: random.Random
-        A seeded random number generator that may be used for the generation of
+    """ A seeded random number generator that may be used for the generation of
         random numbers.
     """
 
@@ -93,7 +95,7 @@ class Context:
 _TYPE_COUNTS: Dict[Type, int] = defaultdict(lambda: 0)
 
 
-def seed(value: int):
+def seed(value: int) -> None:
     """Set the global Plato base seed."""
     # pylint: disable=global-statement
     global _TYPE_COUNTS

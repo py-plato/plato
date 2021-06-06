@@ -68,6 +68,9 @@ templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
+autodoc_typehints = "description"
+
+
 def linkcode_resolve(domain, info):
     if domain != "py":
         return None

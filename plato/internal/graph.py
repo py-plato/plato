@@ -1,11 +1,11 @@
 """Graph algorithms used in Plato."""
 
-from typing import Collection, Dict, Set, TypeVar
+from typing import Collection, Dict, Mapping, Set, TypeVar
 
 T = TypeVar("T")
 
 
-def toposort(graph: Dict[T, Collection[T]]) -> Collection[T]:
+def toposort(graph: Mapping[T, Collection[T]]) -> Collection[T]:
     """Returns the topological sort of ``graph``.
 
     Arguments
